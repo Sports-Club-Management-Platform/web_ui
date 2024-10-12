@@ -1,10 +1,15 @@
+import os
+
 from behave import given, when, then, step
+from dotenv import load_dotenv
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 
+load_dotenv()
+LOGIN_SIGN_UP_URI = os.environ.get("VITE_LOGIN_SIGN_UP")
 
 pages = {
-    "login_sign_up": "http://localhost:5173/login-sign-up",
+    "login_sign_up": LOGIN_SIGN_UP_URI,
 }
 
 

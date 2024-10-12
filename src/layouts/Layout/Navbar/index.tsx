@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import {Link} from "react-router-dom";
 
 export default function Navbar() {
     return (
@@ -17,8 +18,12 @@ export default function Navbar() {
                         />
                     </div>
                     <div className="flex items-center">
-                        <Button variant="outline" className="mr-2 text-green-700 border-green-700 hover:bg-green-50">Login</Button>
-                        <Button className="bg-green-700 text-white hover:bg-green-800">Register</Button>
+                        <Link to={import.meta.env.VITE_LOGIN_SIGN_UP}>
+                            <Button variant="outline" className="mr-2 text-green-700 border-green-700 hover:bg-green-50">Login</Button>
+                        </Link>
+                        <Link to={import.meta.env.VITE_LOGIN_SIGN_UP}>
+                            <Button className="bg-green-700 text-white hover:bg-green-800">Register</Button>
+                        </Link>
                     </div>
                 </div>
             </div>
