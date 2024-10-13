@@ -9,7 +9,7 @@ export default function LandingPage() {
                     className="absolute bg-cover bg-center filter blur-sm h-full w-full"
                     style={{ backgroundImage: "url('/src/assets/bg-landing_page.jpg')" }}
                 ></div>
-
+                <div className="absolute inset-0 bg-black opacity-20"></div>
                 {/* Content */}
                 <div className="relative flex-grow bg-black bg-opacity-50 flex flex-col items-center justify-center text-white">
                     <h1 className="text-4xl md:text-6xl font-bold mb-4 text-center">
@@ -20,6 +20,21 @@ export default function LandingPage() {
                         <Button size="lg">Comprar Bilhetes</Button>
                     </div>
                 </div>
+            </div>
+            <div>
+                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Distinctio facere ab ipsum placeat magnam reiciendis eius necessitatibus, molestiae perferendis doloremque tempora expedita, repellendus quae pariatur. Ipsa maiores unde a quos.
+            </div>
+            <div>
+                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Distinctio facere ab ipsum placeat magnam reiciendis eius necessitatibus, molestiae perferendis doloremque tempora expedita, repellendus quae pariatur. Ipsa maiores unde a quos.
+            </div>
+            <div>
+                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Distinctio facere ab ipsum placeat magnam reiciendis eius necessitatibus, molestiae perferendis doloremque tempora expedita, repellendus quae pariatur. Ipsa maiores unde a quos.
+            </div>
+            <div>
+                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Distinctio facere ab ipsum placeat magnam reiciendis eius necessitatibus, molestiae perferendis doloremque tempora expedita, repellendus quae pariatur. Ipsa maiores unde a quos.
+            </div>
+            <div>
+                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Distinctio facere ab ipsum placeat magnam reiciendis eius necessitatibus, molestiae perferendis doloremque tempora expedita, repellendus quae pariatur. Ipsa maiores unde a quos.
             </div>
             <div>
                 Lorem ipsum dolor, sit amet consectetur adipisicing elit. Distinctio facere ab ipsum placeat magnam reiciendis eius necessitatibus, molestiae perferendis doloremque tempora expedita, repellendus quae pariatur. Ipsa maiores unde a quos.
