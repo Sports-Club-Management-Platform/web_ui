@@ -53,4 +53,8 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  //trocar depois
+  server: {
+    port: 8080,
+  },
 })
