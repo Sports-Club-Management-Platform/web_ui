@@ -1,5 +1,4 @@
 import os
-import time
 
 from behave import given, step, then, when
 from dotenv import load_dotenv
