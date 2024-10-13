@@ -28,6 +28,9 @@ def enter_valid_credentials(context):
     assert username_input is not None
     assert password_input is not None
 
+    login_button = context.driver.find_element(By.NAME, "signInSubmitButton")
+    login_button.click()
+
 @step("select “Continue with google” button")
 def select_continue_with_google_button(context):
     continue_with_google_button = context.driver.find_element(By.NAME, "googleSignUpButton")
