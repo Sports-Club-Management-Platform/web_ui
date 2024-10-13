@@ -1,6 +1,33 @@
 import { Button } from "@/components/ui/button";
+import { useQuery } from '@tanstack/react-query'
+import { useUserStore } from '@/stores/useUserStore'
+import { UserService } from "../../services/Client/UserService";
+import { useEffect } from "react";
 
 export default function LandingPage() {
+
+    const { token, setUserInformation } = useUserStore();
+
+    console.log("Token acessado na LandingPage:", token); // Verifica se o token é acessado
+
+    const fetchUser = async () => {
+        const response = await UserService.getUser();
+        return response.data;
+    }
+
+    const { data } = useQuery({
+        queryKey: ["user"],
+        queryFn: fetchUser,
+        enabled: !!token,
+    })
+
+    useEffect(() => {
+        console.log("Data do usuário:", data);
+        if (data && token){
+            setUserInformation(data);
+        }
+    }, [data, setUserInformation, token]);
+
     return (
         <div>
             <div className="relative flex flex-col min-h-screen">

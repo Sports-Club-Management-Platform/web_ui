@@ -18,14 +18,13 @@ export default function RedirectPage() {
 
   const login = async (code: string) => {
     const test = (await UserService.login(code)).data;
-    console.log(test);
     return test;
   };
 
   const loginMutation = useMutation({
     mutationFn: login,
     onSuccess: (data) => {
-      console.log(data);
+      console.log(data.token);
       useUserStore.getState().login(data.token);
       navigate('/'); // Redireciona após sucesso no login
       // useUserStore.getState().setUserInformation(data.user);

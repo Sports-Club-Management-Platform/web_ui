@@ -1,6 +1,5 @@
 import './index.css'
 
-import { useEffect } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { routes } from "./routes";
 import { ThemeProvider } from "@/components/theme-provider"

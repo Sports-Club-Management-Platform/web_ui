@@ -1,47 +1,62 @@
 import { create } from 'zustand';
-import { parseJWT } from '@/utils/jwt'
+import { UserResponse } from '@/lib/types';
+import { NavigateFunction} from 'react-router-dom';
+
+//alterar o logout depois
 
 interface UserState {
     token: string;
-    name: string;
+    givenName: string;
     email: string;
-    phone: string;
+    familyName: string;
+    username: string;
+    id: string;
+    isActive: boolean;
+    updatedAt: string;
 }
 
 type UserActions = {
     login: (token: string) => void;
-    logout: () => void;
-    setUserInformation: (data: any) => void;
+    logout: (navigate: NavigateFunction) => void;
+    setUserInformation: (data: UserResponse) => void;
 };
 
 export const useUserStore = create<UserState & UserActions>((set) => ({
     token: '',
-    name: '',
+    givenName: '',
     email: '',
-    phone: '',
+    familyName: '',
+    username: '',
+    id: '',
+    isActive: false,
+    updatedAt: '',
 
     login: (token) => {
-        const user = parseJWT(token);
-        console.log(user);
-        set({
-            token: token,
-            ...user,
-        });
+        set({token});
     },
-    setUserInformation: (data: any) => {
+    setUserInformation: (data: UserResponse) => {
         set({
-            name: data.name,
+            givenName: data.given_name,
             email: data.email,
-            phone: data.phone,
+            familyName: data.family_name,
+            username: data.username,
+            id: data.id,
+            isActive: Boolean(data.is_active),
+            updatedAt: data.updated_at
         });
     },
-    logout: () => {
+    logout: (navigate : NavigateFunction) => {
         set({
             token: '',
-            name: '',
+            givenName: '',
             email: '',
-            phone: '',
+            familyName: '',
+            username: '',
+            id: '',
+            isActive: false,
+            updatedAt: '',
         });
+        navigate('/');
     },
 }));
 

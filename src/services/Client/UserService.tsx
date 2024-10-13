@@ -10,6 +10,9 @@ const UserService = {
     // async logout() {
     //     return client.post('/auth/sign-out');
     // },
+    async getUser() {
+        return client.get('/me');
+    }
 }
 
 export { UserService };
