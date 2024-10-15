@@ -5,3 +5,6 @@ venv
 
 #ignore .env
 .env
+
+#ignore sw.js
+dev-dist/sw.js
