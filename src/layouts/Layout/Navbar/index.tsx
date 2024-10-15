@@ -49,6 +49,11 @@ export default function Navbar() {
                         <Button variant="ghost" className={`text-primary text-lg dark:text-white font-bold bg-transparent`}>
                             Bilhetes
                         </Button>
+                        <Link to="/matches">
+                            <Button variant="ghost" className={`text-primary text-lg dark:text-white font-bold bg-transparent`}>
+                                Jogos
+                            </Button>
+                        </Link>
                     </div>
                     <div className="flex-shrink-0 flex items-center transition-all duration-500">
                         <img
