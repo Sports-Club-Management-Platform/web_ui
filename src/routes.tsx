@@ -4,6 +4,7 @@ import { lazy, Suspense, ReactNode, useEffect, useState } from 'react';
 
 const LandingPage = lazy(() => import('./pages/LandingPage'));
 const RedirectPage = lazy(() => import('./pages/RedirectPage'));
+const MatchesPage = lazy(() => import('./pages/MatchesPage'));
 
 const routes = [
     {
@@ -18,6 +19,14 @@ const routes = [
                     </Suspense>
                 )
             },
+            {
+                path: '/matches',
+                element: (
+                    <Suspense fallback={<div>Loading...</div>}>
+                        <MatchesPage />
+                    </Suspense>
+                )
+            }
         ],
 
     },
