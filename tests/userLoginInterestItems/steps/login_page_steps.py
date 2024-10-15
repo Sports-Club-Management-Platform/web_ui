@@ -45,7 +45,7 @@ def select_their_google_account(context):
 @then("they should be able to log in successfully, access their account and the intended features.")
 def they_should_be_able_to_log_in_successfully_access_their_account_and_the_intended_features(context):
     wait = WebDriverWait(context.driver, 10)
-    wait.until(EC.url_to_be("http://localhost:5173/"))
+    wait.until(EC.url_to_be("http://localhost:8080/"))
 
     login_button = context.driver.find_element(By.XPATH, "//button[text()='Login']")
     assert login_button is None
