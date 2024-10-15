@@ -4,6 +4,8 @@ import { ModeToggle } from "@/components/mode-toggle";
 import { useEffect, useState } from "react";
 import { useUserStore } from '@/stores/useUserStore'
 import { useNavigate } from "react-router-dom";
+import { Home, Users, Calendar } from 'lucide-react'; // Importa os ícones necessários
+
 import {
     Avatar,
     AvatarFallback,
@@ -43,14 +45,19 @@ export default function Navbar() {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center transition-all duration-300 ease-linear h-28">
                     <div className="flex items-center">
+                        <Link to="/">
+                            <Button variant="ghost" className={`text-primary text-lg dark:text-white font-bold bg-transparent`}>
+                            <Home className={`text-primary text-lg mr-1 dark:text-white`} />
+                                Home
+                            </Button>
+                        </Link>
                         <Button variant="ghost" className={`text-primary text-lg dark:text-white font-bold bg-transparent`}>
+                            <Users className={`text-primary text-lg mr-1 dark:text-white`} />
                             Sócios
-                        </Button>
-                        <Button variant="ghost" className={`text-primary text-lg dark:text-white font-bold bg-transparent`}>
-                            Bilhetes
                         </Button>
                         <Link to="/matches">
                             <Button variant="ghost" className={`text-primary text-lg dark:text-white font-bold bg-transparent`}>
+                                <Calendar className={`text-primary text-lg mr-1 dark:text-white`} />
                                 Jogos
                             </Button>
                         </Link>

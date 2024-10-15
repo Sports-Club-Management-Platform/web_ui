@@ -9,6 +9,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Calendar } from "@/components/ui/calendar"
 import { Calendar as CalendarIcon, Search, Clock, MapPin, Ticket } from "lucide-react"
 import { format, parseISO, isWithinInterval, startOfWeek, endOfWeek, startOfMonth, endOfMonth, isBefore } from "date-fns"
+import { pt } from "date-fns/locale"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { motion, AnimatePresence } from "framer-motion"
 
@@ -249,9 +250,16 @@ export default function Component() {
                 <Card className={`overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-105 ${isJogoPassado ? 'bg-gray-100' : ''}`}>
                   <CardHeader className="bg-secondary/10">
                     <CardTitle className="flex justify-between items-center">
-                      <span className="text-lg">
-                        {format(parseISO(jogo.data), "dd/MM/yyyy")} - {jogo.hora}
-                      </span>
+                      <div>
+                        <div className="flex items-center">
+                              <Clock className="mr-2" />
+                              {format(parseISO(jogo.data), "d MMMM 'de' yyyy", { locale: pt })}
+                        </div>
+                        {/* hora mais pequena em baixo do dia */}
+                        <div className="flex pt-1 text-muted-foreground text-[1.2rem] items-center">
+                              {jogo.hora}
+                        </div>
+                      </div>
                       <motion.div
                         className={`px-2 py-1 rounded-full text-white text-xs font-semibold ${bilheteStatus.color}`}
                         animate={bilheteStatus.animation === "pulse" ? pulseAnimation : bilheteStatus.animation === "shake" ? shakeAnimation : {}}
