@@ -1,6 +1,6 @@
 import os
 
-from behave import given, when, then, step
+from behave import given, step, then, when
 from dotenv import load_dotenv
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -20,7 +20,7 @@ def given_a_new_user(context):
 
 @when("they visit the landing page")
 def they_visit_the_landing_page(context):
-    context.driver.get("http://localhost:5173/")
+    context.driver.get("http://localhost:8080/")
 
 
 @step("select “{button_text}“ button,")
