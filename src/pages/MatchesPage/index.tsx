@@ -12,6 +12,7 @@ import { format, parseISO, isWithinInterval, startOfWeek, endOfWeek, startOfMont
 import { pt } from "date-fns/locale"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { motion, AnimatePresence } from "framer-motion"
+import { useTheme } from "@/components/theme-provider"
 
 // Dados de exemplo para os jogos (incluindo jogos futuros, URLs de imagens e disponibilidade de bilhetes)
 const jogos = [
@@ -37,6 +38,7 @@ export default function Component() {
   const [filtro, setFiltro] = useState("futuros")
   const [pesquisa, setPesquisa] = useState("")
   const [dataFiltro, setDataFiltro] = useState(null)
+  const { theme } = useTheme()
 
   const dataAtual = new Date()
 
@@ -122,6 +124,8 @@ export default function Component() {
     }
   }
 
+  const specialdregrade = theme === "special" ? "from-[hsl(40,64%,39%)] to-[hsl(40,64%,25%)]" : ""
+
   return (
     <div className="container pt-36 mx-auto p-4 space-y-6">
       <div className="text-center mb-8">
@@ -130,7 +134,7 @@ export default function Component() {
       </div>
 
       {proximoJogo && (
-        <Card className="bg-gradient-to-r from-[hsl(126,95%,28%)] to-[hsl(126,95%,20%)] text-white overflow-hidden dark:from-[hsl(126,95%,20%)] dark:to-[hsl(126,95%,12%)]">
+        <Card className={`bg-gradient-to-r from-[hsl(126,95%,28%)] to-[hsl(126,95%,20%)] text-white overflow-hidden dark:from-[hsl(126,95%,20%)] dark:to-[hsl(126,95%,12%)] ${specialdregrade}`}>
           <CardHeader>
             <CardTitle className="text-3xl font-bold mb-1">Próximo Jogo</CardTitle>
             <CardDescription className="text-green-100 text-lg">
@@ -145,7 +149,7 @@ export default function Component() {
               </div>
               <div className="flex flex-col items-center">
                 <div className="text-4xl font-bold my-2">VS</div>
-                <div className="bg-white text-green-800 rounded-full px-4 py-2 font-bold text-sm">
+                <div className={`bg-white text-green-800 rounded-full px-4 py-2 font-bold text-sm ${specialdregrade && "text-[hsl(40,64%,39%)]"}`}>
                   {format(parseISO(proximoJogo.data), "dd/MM/yyyy")}
                 </div>
               </div>
@@ -154,7 +158,7 @@ export default function Component() {
                 <h3 className="mt-2 text-xl font-semibold">{proximoJogo.equipeB}</h3>
               </div>
             </div>
-            <div className="mt-4 flex justify-between items-center text-sm bg-green-800/30 rounded-lg p-3">
+            <div className={`mt-4 flex justify-between items-center text-sm bg-green-800/30 rounded-lg p-3 ${specialdregrade && "bg-[hsl(40,64%,80%)]/30"}`}>
               <div className="flex items-center space-x-2">
                 <Clock className="h-5 w-5" />
                 <span className="font-medium">{proximoJogo.hora}</span>

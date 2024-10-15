@@ -4,7 +4,8 @@ import { ModeToggle } from "@/components/mode-toggle";
 import { useEffect, useState } from "react";
 import { useUserStore } from '@/stores/useUserStore'
 import { useNavigate } from "react-router-dom";
-import { Home, Users, Calendar } from 'lucide-react'; // Importa os ícones necessários
+import { Home, Users, Calendar } from 'lucide-react';
+import { useTheme } from "@/components/theme-provider"
 
 import {
     Avatar,
@@ -14,12 +15,10 @@ import {
 
 export default function Navbar() {
     const [scrollY, setScrollY] = useState(0);
-
     const navigate = useNavigate();
-
     const { token, givenName, familyName, logout } = useUserStore();
+    const { theme } = useTheme();
 
-    // scroll effect on the symbol
     useEffect(() => {
         const handleScroll = () => {
             setScrollY(window.scrollY);
@@ -33,40 +32,43 @@ export default function Navbar() {
     }, []);
 
     const maxScroll = 100;
-    const scrollFactor = Math.min(scrollY / maxScroll, 1); // Normaliza o scroll entre 0 e 1
+    const scrollFactor = Math.min(scrollY / maxScroll, 1);
 
-    //handle logout
     const handleLogout = () => {
         logout(navigate);
     }
 
+    const logoSrc = theme === "special" 
+        ? "/src/assets/CSC-SemFundo-Special.png"
+        : "/src/assets/CSC-SemFundo.png";
+
     return (
-        <nav className={`fixed w-full z-10 transition-all duration-300 ease-linear ${scrollFactor > 0 ? 'bg-gradient-to-b from-background dark:via-neutral-800 to-transparent' : ''}`}>
+        <nav className={`fixed w-full z-10 transition-all duration-300 ease-linear ${scrollFactor > 0 ? 'bg-gradient-to-b from-background via-background dark:via-neutral-800 to-transparent' : ''}`}>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center transition-all duration-300 ease-linear h-28">
                     <div className="flex items-center">
                         <Link to="/">
-                            <Button variant="ghost" className={`text-primary text-lg dark:text-white font-bold bg-transparent`}>
-                            <Home className={`text-primary text-lg mr-1 dark:text-white`} />
+                            <Button variant="ghost" className="text-primary text-lg dark:text-white font-bold bg-transparent">
+                                <Home className="text-primary text-lg mr-1 dark:text-white" />
                                 Home
                             </Button>
                         </Link>
-                        <Button variant="ghost" className={`text-primary text-lg dark:text-white font-bold bg-transparent`}>
-                            <Users className={`text-primary text-lg mr-1 dark:text-white`} />
+                        <Button variant="ghost" className="text-primary text-lg dark:text-white font-bold bg-transparent">
+                            <Users className="text-primary text-lg mr-1 dark:text-white" />
                             Sócios
                         </Button>
                         <Link to="/matches">
-                            <Button variant="ghost" className={`text-primary text-lg dark:text-white font-bold bg-transparent`}>
-                                <Calendar className={`text-primary text-lg mr-1 dark:text-white`} />
+                            <Button variant="ghost" className="text-primary text-lg dark:text-white font-bold bg-transparent">
+                                <Calendar className="text-primary text-lg mr-1 dark:text-white" />
                                 Jogos
                             </Button>
                         </Link>
                     </div>
-                    <div className="flex-shrink-0 flex items-center transition-all duration-500">
+                    <div className="absolute left-1/2 transform -translate-x-1/2 flex-shrink-0 flex items-center transition-all duration-500">
                         <img
-                            src="/src/assets/CSC-SemFundo.png"
+                            src={logoSrc}
                             alt="Candelária Sport Clube Logo"
-                            className={`transition-all duration-300 ease-linear ${scrollFactor? 'h-20 top-4' : 'h-24 top-8'} absolute`} 
+                            className={`transition-all duration-300 ease-linear ${scrollFactor ? 'h-20' : 'h-24'}`} 
                         />
                     </div>
                     <div className="flex items-center">
