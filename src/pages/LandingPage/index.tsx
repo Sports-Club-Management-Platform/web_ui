@@ -8,8 +8,6 @@ export default function LandingPage() {
 
     const { token, setUserInformation } = useUserStore();
 
-    console.log("Token acessado na LandingPage:", token); // Verifica se o token é acessado
-
     const fetchUser = async () => {
         const response = await UserService.getUser();
         return response.data;

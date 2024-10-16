@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { ModeToggle } from "@/components/mode-toggle";
 import { useEffect, useState } from "react";
 import { useUserStore } from "@/stores/useUserStore";
-import { useNavigate } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useMutation } from "@tanstack/react-query";
 import { UserService } from "../../../services/Client/UserService";
@@ -11,9 +10,7 @@ import { UserService } from "../../../services/Client/UserService";
 export default function Navbar() {
   const [scrollY, setScrollY] = useState(0);
 
-  const navigate = useNavigate();
-
-  const { token, givenName, familyName, logout } = useUserStore();
+  const { token, givenName, familyName, logout : zustandLogout} = useUserStore();
 
   // scroll effect on the symbol
   useEffect(() => {
@@ -31,14 +28,26 @@ export default function Navbar() {
   const maxScroll = 100;
   const scrollFactor = Math.min(scrollY / maxScroll, 1); // Normaliza o scroll entre 0 e 1
 
-  const handleLogout = async () => {
+  const logout = async () => {
     const response = await UserService.logout();
-    console.log(response);
-    if (response.status === 200) {
-      logout(navigate);
-    } else {
-      console.error("Logout failure:", response);
+    window.location.reload();
+    return response.data;
+  }
+
+  const logoutMutation = useMutation({
+    mutationFn: logout,
+    onSuccess: (data) => {
+      console.log(data);
+      zustandLogout();
+      window.location.reload();
+    },
+    onError: (error) => {
+      console.error("Logout falhou:", error);
     }
+  });
+
+  const handleLogout = async () => {
+    logoutMutation.mutate();
   };
 
   return (
