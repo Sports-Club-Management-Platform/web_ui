@@ -1,69 +1,99 @@
-import { Button } from "@/components/ui/button";
+"use client"
+
 import { useQuery } from '@tanstack/react-query'
 import { useUserStore } from '@/stores/useUserStore'
-import { UserService } from "../../services/Client/UserService";
-import { useEffect } from "react";
+import { UserService } from "@/services/Client/UserService"
+import { useEffect, useState } from "react"
+import { parseISO, isBefore } from "date-fns"
+import Hero from './components/Hero'
+import HighlightedGame from './components/HighlitedGame'
+import UpcomingGames from './components/UpcomingGames'
+
+const mockGames = [
+  {
+    id: 1,
+    data: "2024-12-15T20:00:00",
+    equipeA: "Candelária SC",
+    equipeB: "Sporting CP",
+    local: "Pavilhão da Luz",
+    imagemA: "https://picsum.photos/seed/CandelariaSC/200",
+    imagemB: "https://picsum.photos/seed/SportingCP/200"
+  },
+  {
+    id: 2,
+    data: "2024-12-22T19:30:00",
+    equipeA: "FC Porto",
+    equipeB: "Candelária SC",
+    local: "Dragão Arena",
+    imagemA: "https://picsum.photos/seed/FCPorto/200",
+    imagemB: "https://picsum.photos/seed/CandelariaSC/200"
+  },
+  {
+    id: 3,
+    data: "2024-03-29T21:00:00",
+    equipeA: "Candelária SC",
+    equipeB: "SL Benfica",
+    local: "Pavilhão da Luz",
+    imagemA: "https://picsum.photos/seed/CandelariaSC/200",
+    imagemB: "https://picsum.photos/seed/SLBenfica/200"
+  },
+  {
+    id: 4,
+    data: "2024-04-05T18:00:00",
+    equipeA: "Oliveirense",
+    equipeB: "Candelária SC",
+    local: "Pavilhão Dr. Salvador Machado",
+    imagemA: "https://picsum.photos/seed/Oliveirense/200",
+    imagemB: "https://picsum.photos/seed/CandelariaSC/200"
+  }
+]
 
 export default function LandingPage() {
+  const { token, setUserInformation } = useUserStore()
+  const [highlightedGame, setHighlightedGame] = useState(null)
 
-    const { token, setUserInformation } = useUserStore();
+  console.log("Token acessado na LandingPage:", token)
 
-    const fetchUser = async () => {
-        const response = await UserService.getUser();
-        return response.data;
+  const fetchUser = async () => {
+    const response = await UserService.getUser()
+    return response.data
+  }
+  const { data } = useQuery({
+    queryKey: ["user"],
+    queryFn: fetchUser,
+    enabled: !!token,
+  })
+
+  useEffect(() => {
+    console.log("Data do usuário:", data)
+    if (data && token) {
+      setUserInformation(data)
     }
+  }, [data, setUserInformation, token])
 
-    const { data } = useQuery({
-        queryKey: ["user"],
-        queryFn: fetchUser,
-        enabled: !!token,
-    })
+  useEffect(() => {
+    if (mockGames.length > 0) {
+      const sortedGames = [...mockGames].sort((a, b) => parseISO(a.data).getTime() - parseISO(b.data).getTime())
+      const nextGame = sortedGames.find(game => isBefore(new Date(), parseISO(game.data)))
+      setHighlightedGame(nextGame || sortedGames[0])
+    }
+  }, [])
 
-    useEffect(() => {
-        console.log("Data do usuário:", data);
-        if (data && token){
-            setUserInformation(data);
-        }
-    }, [data, setUserInformation, token]);
+  const handleGameClick = (game) => {
+    setHighlightedGame(game)
+  }
 
-    return (
-        <div>
-            <div className="relative flex flex-col min-h-screen">
-                {/* Background image */}
-                <div
-                    className="absolute bg-cover bg-center filter blur-sm h-full w-full"
-                    style={{ backgroundImage: "url('/src/assets/bg-landing_page.jpg')" }}
-                ></div>
-                <div className="absolute inset-0 bg-black opacity-20"></div>
-                {/* Content */}
-                <div className="relative flex-grow bg-black bg-opacity-50 flex flex-col items-center justify-center text-white">
-                    <h1 className="text-4xl md:text-6xl font-bold mb-4 text-center">
-                        Bem-vindo à plataforma do Candelária Sport Clube!
-                    </h1>
-                    <div className="space-x-4">
-                        <Button size="lg">Tornar-se Sócio</Button>
-                        <Button size="lg">Comprar Bilhetes</Button>
-                    </div>
-                </div>
-            </div>
-            <div>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Distinctio facere ab ipsum placeat magnam reiciendis eius necessitatibus, molestiae perferendis doloremque tempora expedita, repellendus quae pariatur. Ipsa maiores unde a quos.
-            </div>
-            <div>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Distinctio facere ab ipsum placeat magnam reiciendis eius necessitatibus, molestiae perferendis doloremque tempora expedita, repellendus quae pariatur. Ipsa maiores unde a quos.
-            </div>
-            <div>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Distinctio facere ab ipsum placeat magnam reiciendis eius necessitatibus, molestiae perferendis doloremque tempora expedita, repellendus quae pariatur. Ipsa maiores unde a quos.
-            </div>
-            <div>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Distinctio facere ab ipsum placeat magnam reiciendis eius necessitatibus, molestiae perferendis doloremque tempora expedita, repellendus quae pariatur. Ipsa maiores unde a quos.
-            </div>
-            <div>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Distinctio facere ab ipsum placeat magnam reiciendis eius necessitatibus, molestiae perferendis doloremque tempora expedita, repellendus quae pariatur. Ipsa maiores unde a quos.
-            </div>
-            <div>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Distinctio facere ab ipsum placeat magnam reiciendis eius necessitatibus, molestiae perferendis doloremque tempora expedita, repellendus quae pariatur. Ipsa maiores unde a quos.
-            </div>
-        </div>
-    );
+  const isNextGame = (game) => {
+    return game.id === mockGames.find(g => isBefore(new Date(), parseISO(g.data)))?.id
+  }
+
+  return (
+    <div>
+      <Hero />
+      {highlightedGame && (
+        <HighlightedGame game={highlightedGame} isNextGame={isNextGame(highlightedGame)} />
+      )}
+      <UpcomingGames games={mockGames.slice(0, 3)} highlightedGame={highlightedGame} onGameClick={handleGameClick} />
+    </div>
+  )
 }
