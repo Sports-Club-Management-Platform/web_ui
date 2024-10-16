@@ -30,7 +30,6 @@ export default function Navbar() {
 
   const logout = async () => {
     const response = await UserService.logout();
-    window.location.reload();
     return response.data;
   }
 
