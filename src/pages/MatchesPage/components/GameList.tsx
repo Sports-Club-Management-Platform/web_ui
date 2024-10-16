@@ -1,11 +1,5 @@
 import { useState } from "react"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Calendar as CalendarIcon, Search } from "lucide-react"
-import { Input } from "@/components/ui/input"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { Calendar } from "@/components/ui/calendar"
-import { startOfWeek, endOfWeek, startOfMonth, endOfMonth, parseISO, isWithinInterval, format } from "date-fns"
-import { Button } from "@/components/ui/button"
+import { startOfWeek, endOfWeek, startOfMonth, endOfMonth, parseISO, isWithinInterval} from "date-fns"
 import GameCard from './GameCard'
 import NextGame from './NextGame'
 import FilterControls from "./FilterControls"
