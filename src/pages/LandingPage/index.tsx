@@ -58,7 +58,6 @@ export default function LandingPage() {
     const response = await UserService.getUser()
     return response.data
   }
-
   const { data } = useQuery({
     queryKey: ["user"],
     queryFn: fetchUser,
