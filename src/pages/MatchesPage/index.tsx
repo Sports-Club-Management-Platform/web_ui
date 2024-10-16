@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { format, parseISO, isWithinInterval, startOfWeek, endOfWeek, startOfMonth, endOfMonth, isBefore } from "date-fns"
+import { parseISO, isWithinInterval, startOfWeek, endOfWeek, startOfMonth, endOfMonth} from "date-fns"
 import { AnimatePresence } from "framer-motion"
 import { useTheme } from "@/components/theme-provider"
 import NextGame from "./components/NextGame"
