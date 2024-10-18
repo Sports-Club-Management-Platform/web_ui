@@ -18,6 +18,9 @@ const config = {
     HOST,
     BASE_URL,
     API_USER_URL: `${BASE_URL}/auth`,
+    API_GAME_URL: `${BASE_URL}/game`,
+    API_CLUBS_URL: `${BASE_URL}/clubs`,
+    API_PAVILIONS_URL: `${BASE_URL}/pavilions`,
 };
 
 export default config;
