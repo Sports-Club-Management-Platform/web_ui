@@ -5,6 +5,7 @@ import { format, parseISO, isBefore } from "date-fns"
 import { pt } from "date-fns/locale"
 import { motion } from "framer-motion"
 import { useTheme } from "@/components/theme-provider"
+import { Link } from "react-router-dom"
 
 export default function GameCard({ jogo, index, dataAtual }) {
   const getBilheteStatus = (jogo) => {
@@ -93,16 +94,20 @@ export default function GameCard({ jogo, index, dataAtual }) {
               <span>{jogo.local}</span>
             </div>
             {!isJogoPassado && jogo.bilhetes === "disponivel" && (
-              <Button variant="outline" size="sm" className="ml-2">
-                <Ticket className="h-4 w-4 mr-2" />
-                Comprar Bilhetes
-              </Button>
+              <Link to={'/ticket-purchase/${jogo.id}'}>
+                <Button variant="outline" size="sm" className="ml-2">
+                  <Ticket className="h-4 w-4 mr-2" />
+                  Comprar Bilhetes
+                </Button>
+              </Link>
             )}
             {!isJogoPassado && jogo.bilhetes === "limitado" && (
-              <Button variant="outline" size="sm" className="ml-2 bg-yellow-100 text-yellow-800 hover:bg-yellow-200">
-                <Ticket className="h-4 w-4 mr-2" />
-                Últimos Bilhetes
-              </Button>
+              <Link to={'/ticket-purchase/${jogo.id}'}>
+                <Button variant="outline" size="sm" className="ml-2 bg-yellow-100 text-yellow-800 hover:bg-yellow-200">
+                  <Ticket className="h-4 w-4 mr-2" />
+                  Últimos Bilhetes
+                </Button>
+              </Link>
             )}
           </div>
         </CardContent>
