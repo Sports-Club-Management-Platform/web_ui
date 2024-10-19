@@ -2,23 +2,23 @@ import config from "@/config";
 import { createClient } from "./client";
 import { ClubPost } from "@/lib/types";
 
-const client = createClient(config.API_USER_URL);
+const client = createClient(config.API_CLUBS_URL);
 
 const ClubService = {
     async getClubs() {
-        return client.get("/clubs");
+        return client.get("/");
     },
     async getClub(id: string) {
-        return client.get(`/clubs/${id}`);
+        return client.get(`/${id}`);
     },
     async createClub(data: ClubPost) {
-        return client.post("/clubs", data);
+        return client.post("/", data);
     },
     async updateClub(id: string, data: ClubPost) {
-        return client.put(`/clubs/${id}`, data);
+        return client.put(`/${id}`, data);
     },
     async deleteClub(id: string) {
-        return client.delete(`/clubs/${id}`);
+        return client.delete(`/${id}`);
     },
 };
 

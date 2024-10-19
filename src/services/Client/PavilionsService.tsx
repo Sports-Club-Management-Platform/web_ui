@@ -3,23 +3,23 @@ import { createClient } from "./client";
 import { PavilionPost } from "@/lib/types";
 
 
-const client = createClient(config.API_USER_URL);
+const client = createClient(config.API_PAVILIONS_URL);
 
 const PavilionsService = {
     async getPavilions() {
-        return client.get("/pavilions");
+        return client.get("/");
     },
     async getPavilion(id: string) {
-        return client.get(`/pavilions/${id}`);
+        return client.get(`/${id}`);
     },
     async createPavilion(data: PavilionPost) {
-        return client.post("/pavilions", data);
+        return client.post("/", data);
     },
     async updatePavilion(id: string, data: PavilionPost) {
-        return client.put(`/pavilions/${id}`, data);
+        return client.put(`/${id}`, data);
     },
     async deletePavilion(id: string) {
-        return client.delete(`/pavilions/${id}`);
+        return client.delete(`/${id}`);
     },
 };
 

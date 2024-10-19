@@ -6,23 +6,23 @@ import { pt } from "date-fns/locale"
 import { motion } from "framer-motion"
 import { useTheme } from "@/components/theme-provider"
 import { Link } from "react-router-dom"
+import { GameResponse, ClubResponse } from "@/lib/types"
 
-export default function GameCard({ jogo, index, dataAtual }) {
-  const getBilheteStatus = (jogo) => {
-    const jogoData = parseISO(jogo.data)
+interface GameCardProps {
+  jogo: GameResponse
+  clubs: ClubResponse[]
+  index: number
+  dataAtual: Date
+}
+
+export default function GameCard({ jogo, clubs, index, dataAtual }: GameCardProps) {
+  const getBilheteStatus = (jogo: GameResponse) => {
+    const jogoData = parseISO(jogo.date_time)
     if (isBefore(jogoData, dataAtual)) {
       return { color: "bg-gray-500", text: "Jogo Encerrado", animation: "none" }
     }
-    switch (jogo.bilhetes) {
-      case "disponivel":
-        return { color: "bg-green-500", text: "Disponível", animation: "pulse" }
-      case "limitado":
-        return { color: "bg-yellow-500", text: "Limitado", animation: "shake" }
-      case "esgotado":
-        return { color: "bg-red-500", text: "Esgotado", animation: "none" }
-      default:
-        return { color: "bg-gray-500", text: "Indisponível", animation: "none" }
-    }
+    // You might want to add logic here to determine ticket availability
+    return { color: "bg-green-500", text: "Disponível", animation: "pulse" }
   }
 
   const { theme } = useTheme()
@@ -36,17 +36,11 @@ export default function GameCard({ jogo, index, dataAtual }) {
     }
   }
 
-  const shakeAnimation = {
-    x: [0, -2, 2, -2, 2, 0],
-    transition: {
-      duration: 1,
-      repeat: Infinity,
-      repeatType: "reverse"
-    }
-  }
-
   const bilheteStatus = getBilheteStatus(jogo)
-  const isJogoPassado = isBefore(parseISO(jogo.data), dataAtual)
+  const isJogoPassado = isBefore(parseISO(jogo.date_time), dataAtual)
+
+  const clubeCasa = clubs.find(club => club.id === jogo.club_home_id)
+  const clubeVisitante = clubs.find(club => club.id === jogo.club_visitor_id)
 
   return (
     <motion.div
@@ -61,16 +55,15 @@ export default function GameCard({ jogo, index, dataAtual }) {
             <div>
               <div className="flex items-center">
                 <Clock className="mr-2" />
-                
-                {format(parseISO(jogo.data), "d MMMM 'de' yyyy", { locale: pt })}
+                {format(parseISO(jogo.date_time), "d MMMM 'de' yyyy", { locale: pt })}
               </div>
               <div className="flex pt-1 text-muted-foreground text-[1.2rem] items-center">
-                {jogo.hora}
+                {format(parseISO(jogo.date_time), "HH:mm")}
               </div>
             </div>
             <motion.div
               className={`px-2 py-1 rounded-full text-white text-xs font-semibold ${bilheteStatus.color}`}
-              animate={bilheteStatus.animation === "pulse" ? pulseAnimation : bilheteStatus.animation === "shake" ? shakeAnimation : {}}
+              animate={bilheteStatus.animation === "pulse" ? pulseAnimation : {}}
             >
               {bilheteStatus.text}
             </motion.div>
@@ -79,33 +72,25 @@ export default function GameCard({ jogo, index, dataAtual }) {
         <CardContent className="pt-4">
           <div className="flex justify-between items-center mb-4">
             <div className="flex items-center space-x-2">
-              <img src={jogo.imagemA} alt={jogo.equipeA} className="w-12 h-12 rounded-full object-cover" />
-              <span className="font-semibold">{jogo.equipeA}</span>
+              <img src={clubeCasa?.image} alt={clubeCasa?.name} className="w-12 h-12 rounded-full object-cover" />
+              <span className="font-semibold">{clubeCasa?.name}</span>
             </div>
             <span className="text-2xl font-bold">VS</span>
             <div className="flex items-center space-x-2">
-              <span className="font-semibold">{jogo.equipeB}</span>
-              <img src={jogo.imagemB} alt={jogo.equipeB} className="w-12 h-12 rounded-full object-cover" />
+              <span className="font-semibold">{clubeVisitante?.name}</span>
+              <img src={clubeVisitante?.image} alt={clubeVisitante?.name} className="w-12 h-12 rounded-full object-cover" />
             </div>
           </div>
           <div className="flex justify-between items-center text-sm text-muted-foreground">
             <div className="flex items-center space-x-2">
               <MapPin className="h-4 w-4" />
-              <span>{jogo.local}</span>
+              <span>{clubeCasa?.name}</span>
             </div>
-            {!isJogoPassado && jogo.bilhetes === "disponivel" && (
-              <Link to={'/ticket-purchase/${jogo.id}'}>
+            {!isJogoPassado && (
+              <Link to={`/ticket-purchase/${jogo.id}`}>
                 <Button variant="outline" size="sm" className="ml-2">
                   <Ticket className="h-4 w-4 mr-2" />
                   Comprar Bilhetes
-                </Button>
-              </Link>
-            )}
-            {!isJogoPassado && jogo.bilhetes === "limitado" && (
-              <Link to={'/ticket-purchase/${jogo.id}'}>
-                <Button variant="outline" size="sm" className="ml-2 bg-yellow-100 text-yellow-800 hover:bg-yellow-200">
-                  <Ticket className="h-4 w-4 mr-2" />
-                  Últimos Bilhetes
                 </Button>
               </Link>
             )}
