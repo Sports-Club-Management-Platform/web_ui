@@ -7,7 +7,9 @@ import { useTheme } from "@/components/theme-provider"
 import NextGame from "./components/NextGame"
 import FilterControls from "./components/FilterControls"
 import GameCard from "./components/GameCard"
-
+import { GameResponse } from "@/lib/types"
+import { GamesService } from "@/services/Client/GamesService"
+import { useQuery } from "@tanstack/react-query"
 
 // Dados de exemplo para os jogos (incluindo jogos futuros, URLs de imagens e disponibilidade de bilhetes)
 const jogos = [
@@ -41,14 +43,11 @@ export default function MatchesPage() {
     .filter(jogo => parseISO(jogo.data) > dataAtual)
     .sort((a, b) => parseISO(a.data).getTime() - parseISO(b.data).getTime())[0]
 
-  const filtrarPorTrimestre = (jogo) => {
-    const mes = parseInt(jogo.data.split("-")[1])
-    if (filtro === "todos" || filtro === "futuros") return true
-    if (filtro === "1") return mes >= 1 && mes <= 3
-    if (filtro === "2") return mes >= 4 && mes <= 6
-    if (filtro === "3") return mes >= 7 && mes <= 9
-    if (filtro === "4") return mes >= 10 && mes <= 12
-  }
+    const filtrarPorJornada = (jogo) => {
+      const jornada = jogo.jornada; // Supondo que cada jogo tenha uma propriedade 'jornada' do tipo number
+      if (filtro === "todos" || filtro === "futuros") return true;
+      return jornada === parseInt(filtro);
+    };
 
   const filtrarPorPesquisa = (jogo) => {
     const termoPesquisa = pesquisa.toLowerCase()
@@ -79,7 +78,7 @@ export default function MatchesPage() {
   }
 
   const jogosFiltrados = jogos
-    .filter(filtrarPorTrimestre)
+    .filter(filtrarPorJornada)
     .filter(filtrarPorPesquisa)
     .filter(filtrarPorData)
     .filter(filtrarJogosFuturos)
