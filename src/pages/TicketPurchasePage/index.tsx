@@ -33,8 +33,7 @@ export default function TicketPurchasePage() {
   }
 
   const handleContinueToPayment = () => {
-    // Here you would integrate with Stripe to handle the payment
-    console.log("Continuing to Stripe payment...")
+    // might want to delete this if never used
   }
 
   return (

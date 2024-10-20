@@ -31,39 +31,46 @@ export default function BuyerInformation({
           <div>
             <Label htmlFor="name">Nome</Label>
             <Input
-              id="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="bg-transparent text-white"
-              required
+                id="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="bg-transparent text-white"
+                required
             />
           </div>
           <div>
             <Label htmlFor="email">Email</Label>
             {isChangingEmail ? (
-              <Input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="bg-transparent text-white"
-                required
-              />
+                <Input
+                    id="email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="bg-transparent text-white"
+                    required
+                />
             ) : (
-              <div className="flex items-center">
-                <span className="flex-grow">{email}</span>
-                <Button variant="link" onClick={() => setIsChangingEmail(true)}>
-                  Alterar
-                </Button>
-              </div>
+                <div className="flex items-center">
+                  <span className="flex-grow">{email}</span>
+                  <Button variant="link" onClick={() => setIsChangingEmail(true)}>
+                    Alterar
+                  </Button>
+                </div>
             )}
           </div>
-          <Button 
-            onClick={onContinueToPayment} 
-            className="w-full mt-4"
-          >
-            <CreditCard className="mr-2 h-4 w-4" /> Continuar para Pagamento
-          </Button>
+          <form action={
+              'http://localhost:8000/create-checkout-session' +
+              `?price_id=${"price_1QBvVfJo4ha2Zj4nO3F0YLFr"}&quantity=${"1"}`
+          } method="POST">
+            <Button
+                className="w-full mt-4"
+                type="submit"
+            >
+              <CreditCard className="mr-2 h-4 w-4"/> Continuar para Pagamento
+            </Button>
+          </form>
+
+
         </div>
       </CardContent>
     </Card>
