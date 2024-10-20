@@ -8,3 +8,6 @@ venv
 
 #ignore sw.js
 dev-dist/sw.js
+
+#src/static
+static
