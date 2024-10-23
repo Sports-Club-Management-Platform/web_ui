@@ -13,7 +13,7 @@ import { ClubService } from "@/services/Client/ClubService"
 import { useQuery } from "@tanstack/react-query"
 
 export default function MatchesPage() {
-  const [filtro, setFiltro] = useState("futuros")
+  const [filtro, setFiltro] = useState("todos")
   const [pesquisa, setPesquisa] = useState("")
   const [dataFiltro, setDataFiltro] = useState<Date | null>(null)
   const { theme } = useTheme()
