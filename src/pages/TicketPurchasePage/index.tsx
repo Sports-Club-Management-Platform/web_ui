@@ -4,7 +4,6 @@ import { useState } from "react"
 import { useParams } from "react-router-dom"
 import GameHeader from "./components/GameHeader"
 import TicketSelection from "./components/TicketSelection"
-import BuyerInformation from "./components/BuyerInformation"
 import { GameResponse, PavilionResponse } from "@/lib/types"
 import { useQuery } from "@tanstack/react-query"
 import { GamesService } from "@/services/Client/GamesService"
@@ -14,9 +13,6 @@ import { Skeleton } from "@/components/ui/skeleton"
 export default function TicketPurchasePage() {
   const { gameId } = useParams()
   const [selectedTickets, setSelectedTickets] = useState(1)
-  const [name, setName] = useState("")
-  const [email, setEmail] = useState("user@example.com")
-  const [isChangingEmail, setIsChangingEmail] = useState(false)
 
   const { data: game, isLoading: isLoadingGame, error: gameError } = useQuery<GameResponse>({
     queryKey: ["game", gameId],
@@ -31,10 +27,6 @@ export default function TicketPurchasePage() {
 
   const handleTicketChange = (quantity: number) => {
     setSelectedTickets(quantity)
-  }
-
-  const handleContinueToPayment = () => {
-    console.log("Continuing to Stripe payment...")
   }
 
   if (isLoadingGame || isLoadingPavilion) {
@@ -69,19 +61,10 @@ export default function TicketPurchasePage() {
       <div className="relative z-10 container mx-auto px-4 py-8 text-white">
         <h1 className="text-4xl font-bold mb-8 text-center">Compra de Bilhetes</h1>
         <GameHeader game={game} pavilion={pavilion} />
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 gap-8">
           <TicketSelection
             selectedTickets={selectedTickets}
             onTicketChange={handleTicketChange}
-          />
-          <BuyerInformation
-            name={name}
-            setName={setName}
-            email={email}
-            setEmail={setEmail}
-            isChangingEmail={isChangingEmail}
-            setIsChangingEmail={setIsChangingEmail}
-            onContinueToPayment={handleContinueToPayment}
           />
         </div>
       </div>
