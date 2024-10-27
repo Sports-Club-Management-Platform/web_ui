@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { CreditCard } from "lucide-react"
+import config from "../../../config";
 
 interface BuyerInformationProps {
   name: string
@@ -58,17 +59,7 @@ export default function BuyerInformation({
                 </div>
             )}
           </div>
-          <form action={
-              'http://localhost:8000/create-checkout-session' +
-              `?price_id=${"price_1QBvVfJo4ha2Zj4nO3F0YLFr"}&quantity=${"1"}`
-          } method="POST">
-            <Button
-                className="w-full mt-4"
-                type="submit"
-            >
-              <CreditCard className="mr-2 h-4 w-4"/> Continuar para Pagamento
-            </Button>
-          </form>
+
 
 
         </div>

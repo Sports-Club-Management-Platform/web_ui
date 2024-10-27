@@ -71,3 +71,9 @@ export interface ClubPost {
     new_club: ClubData;
     image: string;
 }
+
+//payments
+
+export interface CheckoutSessionResponse {
+    checkout_url: string;
+}
