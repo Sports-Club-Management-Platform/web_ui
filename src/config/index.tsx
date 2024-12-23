@@ -1,4 +1,4 @@
-let HOST, BASE_URL_USER, BASE_URL, WS_SCHEME, BASE_URL_GAME, BASE_URL_PAYMENTS;
+let HOST, BASE_URL_USER, BASE_URL_TICKET, BASE_URL, WS_SCHEME, BASE_URL_GAME, BASE_URL_PAYMENTS;
 
 const scheme = {
     HTTP: 'http://',
@@ -11,6 +11,7 @@ if (import.meta.env.PROD) {
 } else {
     HOST = 'localhost';
     BASE_URL_USER = `${scheme.HTTP}${HOST}:8000`;
+    BASE_URL_TICKET = `${scheme.HTTP}${HOST}:8001`;
     BASE_URL_GAME = `${scheme.HTTP}${HOST}:8002`;
     BASE_URL_PAYMENTS = `${scheme.HTTP}${HOST}:8003`;
 }
@@ -23,6 +24,7 @@ const config = {
     API_GAME_URL: `${BASE_URL_GAME}/games`,
     API_CLUBS_URL: `${BASE_URL_GAME}/clubs`,
     API_PAVILIONS_URL: `${BASE_URL_GAME}/pavilions`,
+    API_TICKETS_URL: `${BASE_URL_TICKET}/tickets`,
     API_PAYMENTS_URL: `${BASE_URL_PAYMENTS}`,
 };
 

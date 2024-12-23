@@ -77,3 +77,15 @@ export interface ClubPost {
 export interface CheckoutSessionResponse {
     checkout_url: string;
 }
+
+// tickets
+export interface TicketResponse {
+    id: number
+    game_id: number
+    name: string
+    description: string
+    active: boolean
+    price: number
+    stripe_prod_id: string
+    stripe_image_url: string
+}

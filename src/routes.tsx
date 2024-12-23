@@ -35,6 +35,7 @@ function ProtectedRoute({
 const LandingPage = lazy(() => import("./pages/LandingPage"));
 const RedirectPage = lazy(() => import("./pages/RedirectPage"));
 const MatchesPage = lazy(() => import("./pages/MatchesPage"));
+const ManagementPage = lazy(() => import("./pages/ManagementPage"));
 const TicketPurchasePage = lazy(() => import("./pages/TicketPurchasePage"));
 const GeneralError = lazy(() => import("./pages/ErrorPages/GeneralError"));
 const MaintenanceError = lazy(
@@ -54,6 +55,14 @@ const routes = [
           <Suspense fallback={<div>Loading...</div>}>
             <LandingPage />
           </Suspense>
+        ),
+      },
+      {
+        path: "/management",
+        element: (
+            <Suspense fallback={<div>Loading...</div>}>
+              <ManagementPage />
+            </Suspense>
         ),
       },
       {

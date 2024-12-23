@@ -14,7 +14,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { useTheme } from "@/components/theme-provider";
-import { Home, Users, Calendar, Menu } from "lucide-react";
+import {Home, Users, Calendar, Menu, Wrench} from "lucide-react";
 
 export default function Navbar() {
   const [scrollY, setScrollY] = useState(0);
@@ -81,6 +81,12 @@ export default function Navbar() {
         <Button variant="ghost" className={`flex items-center ${inSheet ? 'w-full justify-start' : ''}`}>
           <Calendar className="text-primary text-lg mr-1 dark:text-white" />
           Jogos
+        </Button>
+      </Link>
+      <Link to="/management" onClick={() => setIsOpen(false)} className={`text-primary text-lg dark:text-white font-bold ${inSheet ? 'w-full' : ''}`}>
+        <Button variant="ghost" className={`flex items-center ${inSheet ? 'w-full justify-start' : ''}`}>
+          <Wrench className="text-primary text-lg mr-1 dark:text-white" />
+          Management
         </Button>
       </Link>
     </>
