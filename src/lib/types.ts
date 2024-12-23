@@ -86,6 +86,6 @@ export interface TicketResponse {
     description: string
     active: boolean
     price: number
-    stripe_prod_id: string
+    stripe_price_id: string
     stripe_image_url: string
 }

@@ -2,7 +2,6 @@
 
 import { useState } from "react"
 import { parseISO, isSameDay } from "date-fns"
-import { useTheme } from "@/components/theme-provider"
 import FilterControls from "./components/FilterControls"
 import { GameResponse, ClubResponse } from "@/lib/types"
 import { GamesService } from "@/services/Client/GamesService"
@@ -17,7 +16,6 @@ export default function MatchesPage() {
   const [filtro, setFiltro] = useState("todos")
   const [pesquisa, setPesquisa] = useState("")
   const [dataFiltro, setDataFiltro] = useState<Date | null>(null)
-  const { theme } = useTheme()
 
   const dataAtual = new Date()
 
