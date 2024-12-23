@@ -7,22 +7,30 @@ import { motion } from "framer-motion"
 import { useTheme } from "@/components/theme-provider"
 import { Link } from "react-router-dom"
 import { GameResponse, ClubResponse } from "@/lib/types"
+import {TicketResponse} from "../../../lib/types.ts";
 
 interface GameCardProps {
   jogo: GameResponse
+  ticket: TicketResponse | undefined
   clubs: ClubResponse[]
   index: number
   dataAtual: Date
 }
 
-export default function GameCard({ jogo, clubs, index, dataAtual }: GameCardProps) {
+export default function GameCard({ jogo, ticket, clubs, index, dataAtual }: GameCardProps) {
   const getBilheteStatus = (jogo: GameResponse) => {
     const jogoData = parseISO(jogo.date_time)
     if (isBefore(jogoData, dataAtual)) {
       return { color: "bg-gray-500", text: "Jogo Encerrado", animation: "none" }
+    } else if (ticket){
+      // If it exists ticket for game
+      // might not sell tickets for all games
+      return { color: "bg-green-500", text: "Disponível", animation: "pulse" }
+    } else {
+      return { color: "bg-red-500", text: "Indisponível para Venda", animation: "none" }
     }
     // You might want to add logic here to determine ticket availability
-    return { color: "bg-green-500", text: "Disponível", animation: "pulse" }
+
   }
 
   const { theme } = useTheme()
@@ -62,7 +70,7 @@ export default function GameCard({ jogo, clubs, index, dataAtual }: GameCardProp
               </div>
             </div>
             <motion.div
-              className={`px-2 py-1 rounded-full text-white text-xs font-semibold ${bilheteStatus.color}`}
+              className={`px-2 py-1 rounded-full text-white text-xs text-center font-semibold ${bilheteStatus.color}`}
               animate={bilheteStatus.animation === "pulse" ? pulseAnimation : {}}
             >
               {bilheteStatus.text}
@@ -86,7 +94,7 @@ export default function GameCard({ jogo, clubs, index, dataAtual }: GameCardProp
               <MapPin className="h-4 w-4" />
               <span>{clubeCasa?.name}</span>
             </div>
-            {!isJogoPassado && (
+            {!isJogoPassado && ticket && (
               <Link to={`/ticket-purchase/${jogo.id}`}>
                 <Button variant="outline" size="sm" className="ml-2">
                   <Ticket className="h-4 w-4 mr-2" />

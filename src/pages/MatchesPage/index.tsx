@@ -11,6 +11,8 @@ import { GameResponse, ClubResponse } from "@/lib/types"
 import { GamesService } from "@/services/Client/GamesService"
 import { ClubService } from "@/services/Client/ClubService"
 import { useQuery } from "@tanstack/react-query"
+import {TicketResponse} from "../../lib/types.ts";
+import {TicketService} from "../../services/Client/TicketService.tsx";
 
 export default function MatchesPage() {
   const [filtro, setFiltro] = useState("todos")
@@ -19,6 +21,14 @@ export default function MatchesPage() {
   const { theme } = useTheme()
 
   const dataAtual = new Date()
+
+  const { data: tickets = [] } = useQuery<TicketResponse[]>({
+    queryKey: ["tickets"],
+    queryFn: async () => {
+      const response = await TicketService.getTickets()
+      return response.data
+    },
+  })
 
   const { data: jogos = [] } = useQuery<GameResponse[]>({
     queryKey: ["games"],
@@ -36,6 +46,7 @@ export default function MatchesPage() {
     },
   })
 
+  const getTicketByGameId = (gameId: number) => tickets.find(ticket => ticket.game_id === gameId)
   const getClubById = (id: number) => clubs.find(club => club.id === id)
 
   const proximoJogo = jogos
@@ -99,7 +110,7 @@ export default function MatchesPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <AnimatePresence>
           {jogosFiltrados.map((jogo, index) => (
-            <GameCard key={jogo.id} jogo={jogo} clubs={clubs} index={index} dataAtual={dataAtual} />
+            <GameCard key={jogo.id} jogo={jogo} ticket={getTicketByGameId(jogo.id)} clubs={clubs} index={index} dataAtual={dataAtual} />
           ))}
         </AnimatePresence>
       </div>

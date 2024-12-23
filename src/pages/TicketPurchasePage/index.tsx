@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { useParams } from "react-router-dom"
+import {useNavigate, useParams} from "react-router-dom"
 import GameHeader from "./components/GameHeader"
 import TicketSelection from "./components/TicketSelection"
 import { GameResponse, PavilionResponse } from "@/lib/types"
@@ -15,10 +15,11 @@ import {TicketResponse} from "../../lib/types.ts";
 export default function TicketPurchasePage() {
   const { gameId } = useParams()
   const [selectedNumberTickets, setSelectedNumberTickets] = useState(1)
+  const navigate = useNavigate();
 
   const { data: ticket, isLoading: isLoadingTicket, error: ticketError} = useQuery<TicketResponse>({
     queryKey: ["ticket"],
-    queryFn: () => TicketService.getTicketByGameId(gameId).then(response => response.data),
+    queryFn: () => TicketService.getTicketByGameId(gameId).then(response=> response.data),
   })
 
   const { data: game, isLoading: isLoadingGame, error: gameError } = useQuery<GameResponse>({
@@ -49,6 +50,10 @@ export default function TicketPurchasePage() {
   }
 
   if (gameError || !game) {
+    if (gameError?.status === 404) {
+      // game does not exist
+      navigate("/404")
+    }
     return (
       <div className="min-h-screen pt-36 container mx-auto px-4 py-8 text-center">
         <h1 className="text-4xl font-bold mb-4">Error</h1>
@@ -58,6 +63,10 @@ export default function TicketPurchasePage() {
   }
 
   if (ticketError || !ticket) {
+    if (ticketError?.status === 404) {
+      // game does not exist
+      navigate("/404")
+    }
     return (
       <div className="min-h-screen pt-36 container mx-auto px-4 py-8 text-center">
         <h1 className="text-4xl font-bold mb-4">Error</h1>
