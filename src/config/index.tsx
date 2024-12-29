@@ -1,4 +1,4 @@
-let HOST, BASE_URL_USER, BASE_URL, WS_SCHEME, BASE_URL_GAME, BASE_URL_PAYMENTS;
+let HOST, BASE_URL_USER, BASE_URL_GAME, BASE_URL_PAYMENTS;
 
 const scheme = {
     HTTP: 'http://',
@@ -7,7 +7,7 @@ const scheme = {
 
 if (import.meta.env.PROD) {
     HOST = 'www.google.com';
-    BASE_URL = `${scheme.HTTPS}${HOST}`;
+    // BASE_URL = `${scheme.HTTPS}${HOST}`;
 } else {
     HOST = 'localhost';
     BASE_URL_USER = `${scheme.HTTP}${HOST}:8000`;

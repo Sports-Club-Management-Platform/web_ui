@@ -15,12 +15,12 @@ interface GameHeaderProps {
 const GameHeader: FC<Readonly<GameHeaderProps>> = ({ game, pavilion }) => {
   const { data: homeClub, isLoading: isLoadingHomeClub } = useQuery<ClubResponse>({
     queryKey: ["club", game.club_home_id],
-    queryFn: () => ClubService.getClub(game.club_home_id).then((response : {data: ClubResponse}) => response.data),
+    queryFn: () => ClubService.getClub(game.club_home_id.toString()).then((response : {data: ClubResponse}) => response.data),
   })
 
   const { data: visitorClub, isLoading: isLoadingVisitorClub } = useQuery<ClubResponse>({
     queryKey: ["club", game.club_visitor_id],
-    queryFn: () => ClubService.getClub(game.club_visitor_id).then((response : {data: ClubResponse}) => response.data),
+    queryFn: () => ClubService.getClub(game.club_visitor_id.toString()).then((response : {data: ClubResponse}) => response.data),
   })
 
   if (isLoadingHomeClub || isLoadingVisitorClub) {
