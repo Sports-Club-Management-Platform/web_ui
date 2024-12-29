@@ -3,7 +3,23 @@ import { Clock, MapPin } from "lucide-react"
 import { format, parseISO } from "date-fns"
 import { pt } from "date-fns/locale"
 
-export default function UpcomingGames({ games, highlightedGame, onGameClick }) {
+interface Game {
+  id: number;
+  equipeA: string;
+  equipeB: string;
+  imagemA: string;
+  imagemB: string;
+  data: string;
+  local: string;
+}
+
+interface UpcomingGamesProps {
+  games: Game[];
+  highlightedGame: Game | null;
+  onGameClick: (game: Game) => void;
+}
+
+export default function UpcomingGames({ games, highlightedGame, onGameClick }: UpcomingGamesProps) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mx-auto max-w-6xl mt-8 mb-16">
       {games.map((game) => (

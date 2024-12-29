@@ -1,36 +1,6 @@
 import { CleanLayout } from "./layouts/Layout";
-import { lazy, Suspense, ReactNode, useEffect, useState } from "react";
+import { lazy, Suspense } from "react";
 import { Navigate } from "react-router-dom";
-import { useUserStore } from "@/stores/useUserStore";
-
-function ProtectedRoute({
-  children,
-  loggedIn = true,
-  redirect = import.meta.env.VITE_LOGIN_SIGN_UP,
-}: {
-  children: ReactNode;
-  loggedIn?: boolean;
-  redirect?: string;
-}) {
-  const [isLoading, setIsLoading] = useState(true);
-  const { token } = useUserStore((state: string) => state);
-
-  useEffect(() => {
-    setIsLoading(false);
-  }, [token]);
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (loggedIn && !token) {
-    return <Navigate to={redirect} />;
-  } else if (!loggedIn && token) {
-    return <Navigate to="/" />;
-  }
-
-  return children;
-}
 
 const LandingPage = lazy(() => import("./pages/LandingPage"));
 const RedirectPage = lazy(() => import("./pages/RedirectPage"));

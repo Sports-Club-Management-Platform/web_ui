@@ -50,7 +50,15 @@ const mockGames = [
 
 export default function LandingPage() {
   const { token, setUserInformation } = useUserStore()
-  const [highlightedGame, setHighlightedGame] = useState(null)
+  const [highlightedGame, setHighlightedGame] = useState<{
+    id: number;
+    data: string;
+    equipeA: string;
+    equipeB: string;
+    local: string;
+    imagemA: string;
+    imagemB: string;
+  } | null>(null)
 
   console.log("Token acessado na LandingPage:", token)
 
@@ -79,11 +87,11 @@ export default function LandingPage() {
     }
   }, [])
 
-  const handleGameClick = (game) => {
+  const handleGameClick = (game: { id: number; data: string; equipeA: string; equipeB: string; local: string; imagemA: string; imagemB: string }) => {
     setHighlightedGame(game)
   }
 
-  const isNextGame = (game) => {
+  const isNextGame = (game: { id: number; data: string; equipeA: string; equipeB: string; local: string; imagemA: string; imagemB: string }) => {
     return game.id === mockGames.find(g => isBefore(new Date(), parseISO(g.data)))?.id
   }
 

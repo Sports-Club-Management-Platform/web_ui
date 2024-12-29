@@ -2,7 +2,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {CreditCard} from "lucide-react";
-import {useMutation, useQuery} from "@tanstack/react-query";
+import {useMutation} from "@tanstack/react-query";
 import {PaymentsService} from "../../../services/Client/PaymentsService.tsx";
 
 interface TicketSelectionProps {

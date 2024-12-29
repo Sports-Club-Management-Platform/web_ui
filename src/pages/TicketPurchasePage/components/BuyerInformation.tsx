@@ -2,8 +2,6 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { CreditCard } from "lucide-react"
-import config from "../../../config";
 
 interface BuyerInformationProps {
   name: string
@@ -12,7 +10,7 @@ interface BuyerInformationProps {
   setEmail: (email: string) => void
   isChangingEmail: boolean
   setIsChangingEmail: (isChanging: boolean) => void
-  onContinueToPayment: () => void
+  // onContinueToPayment: () => void
 }
 
 export default function BuyerInformation({
@@ -22,7 +20,7 @@ export default function BuyerInformation({
   setEmail,
   isChangingEmail,
   setIsChangingEmail,
-  onContinueToPayment
+  // onContinueToPayment
 }: BuyerInformationProps) {
   return (
     <Card className="bg-white/10 backdrop-blur-md text-white">

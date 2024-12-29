@@ -1,4 +1,4 @@
-import { Code, Loader2, LogIn } from "lucide-react";
+import { Loader2, LogIn } from "lucide-react";
 import { useEffect } from "react";
 
 //login/register imports

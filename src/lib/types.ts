@@ -1,11 +1,9 @@
 export interface UserResponse {
-    givenName: string;
     email: string;
-    familyName: string;
-    username: string;
     id: string;
-    isActive: boolean;
-    updatedAt: string;
+    name: string;
+    username: string;
+    updated_at: string;
 }
 
 //games 
