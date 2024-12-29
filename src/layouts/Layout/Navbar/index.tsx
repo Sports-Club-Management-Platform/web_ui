@@ -19,7 +19,7 @@ import {Home, Users, Calendar, Menu, Wrench} from "lucide-react";
 export default function Navbar() {
   const [scrollY, setScrollY] = useState(0);
   const [isOpen, setIsOpen] = useState(false)
-  const { token, givenName, familyName, logout: zustandLogout } = useUserStore();
+  const { token, name, logout: zustandLogout } = useUserStore();
   const { theme } = useTheme()
 
   useEffect(() => {
@@ -134,7 +134,7 @@ export default function Navbar() {
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
                 <div className="hidden md:block text-primary mr-2 text-lg dark:text-white font-bold">
-                  {givenName} {familyName}
+                  {name}
                 </div>
                 <Button onClick={handleLogout} variant="outline" className="mr-2">Logout</Button>
               </div>

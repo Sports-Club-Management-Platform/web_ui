@@ -3,7 +3,16 @@ import { Clock, MapPin } from "lucide-react"
 import { format, parseISO } from "date-fns"
 import { pt } from "date-fns/locale"
 
-export default function HighlightedGame({ game, isNextGame }) {
+interface Game {
+  imagemA: string;
+  equipeA: string;
+  imagemB: string;
+  equipeB: string;
+  data: string;
+  local: string;
+}
+
+export default function HighlightedGame({ game, isNextGame }: { game: Game; isNextGame: boolean }) {
   return (
     <Card className="mx-auto max-w-6xl mt-8 bg-primary text-primary-foreground">
       <CardHeader>

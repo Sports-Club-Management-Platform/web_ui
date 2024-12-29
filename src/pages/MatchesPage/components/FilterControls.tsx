@@ -37,8 +37,8 @@ export default function FilterControls({
           <PopoverContent className="w-auto p-0">
             <Calendar
               mode="single"
-              selected={dataFiltro}
-              onSelect={setDataFiltro}
+              selected={dataFiltro ?? undefined}
+              onSelect={(date) => setDataFiltro(date ?? null)}
               initialFocus
             />
           </PopoverContent>

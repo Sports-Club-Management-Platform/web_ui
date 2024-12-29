@@ -24,12 +24,13 @@ export default function TicketPurchasePage() {
 
   const { data: game, isLoading: isLoadingGame, error: gameError } = useQuery<GameResponse>({
     queryKey: ["game", gameId],
-    queryFn: () => GamesService.getGame(gameId).then(response => response.data),
+    queryFn: () => GamesService.getGame(gameId as string).then(response => response.data),
+    enabled: !!gameId,
   })
 
   const { data: pavilion, isLoading: isLoadingPavilion } = useQuery<PavilionResponse>({
     queryKey: ["pavilion", game?.pavilion_id],
-    queryFn: () => PavilionsService.getPavilion(game.pavilion_id).then(response => response.data),
+    queryFn: () => PavilionsService.getPavilion(game?.pavilion_id.toString() || '').then(response => response.data),
     enabled: !!game?.pavilion_id,
   })
 
@@ -85,7 +86,7 @@ export default function TicketPurchasePage() {
       </div>
       <div className="relative z-10 container mx-auto px-4 py-8 text-white">
         <h1 className="text-4xl font-bold mb-8 text-center">Compra de Bilhetes</h1>
-        <GameHeader game={game} pavilion={pavilion} />
+        {pavilion && <GameHeader game={game} pavilion={pavilion} />}
         <div className="grid grid-cols-1 gap-8">
           <TicketSelection
             selectedNumberTickets={selectedNumberTickets}
