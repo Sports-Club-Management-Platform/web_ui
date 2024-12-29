@@ -20,10 +20,10 @@ FROM nginx:stable-alpine
 RUN rm -rf /usr/share/nginx/html/*
 
 # Copiar os arquivos estáticos gerados pelo build para o Nginx
-COPY --from=build /web_ui/dist /usr/shar@e/nginx/html
+COPY --from=build /web_ui/dist /usr/share/nginx/html
 
 # Expor a porta padrão do Nginx
-EXPOSE 8080
+EXPOSE 80
 
 # Configurar o comando padrão para iniciar o Nginx
 CMD ["nginx", "-g", "daemon off;"]
