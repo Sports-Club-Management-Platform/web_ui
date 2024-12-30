@@ -1,4 +1,5 @@
 import { CleanLayout } from "./layouts/Layout";
+import { AdminLayout } from "./layouts/AdminLayout";
 import { lazy, Suspense, ReactNode, useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { useUserStore } from "@/stores/useUserStore";
@@ -55,14 +56,6 @@ const routes = [
           <Suspense fallback={<div>Loading...</div>}>
             <LandingPage />
           </Suspense>
-        ),
-      },
-      {
-        path: "/management",
-        element: (
-            <Suspense fallback={<div>Loading...</div>}>
-              <ManagementPage />
-            </Suspense>
         ),
       },
       {
@@ -138,6 +131,23 @@ const routes = [
       </Suspense>
     ),
   },
+  {
+    path: "/",
+    element: <AdminLayout />,
+    children: [
+      {
+        path: "/management/members",
+        element: (
+            <Suspense fallback={<div>Loading...</div>}>
+              <ProtectedRoute>
+                <ManagementPage />
+              </ProtectedRoute>
+            </Suspense>
+        ),
+      },
+    ],
+  },
+
 ];
 
 export { routes };

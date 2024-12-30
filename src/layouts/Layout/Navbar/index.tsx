@@ -26,6 +26,7 @@ import {
 import { useTheme } from "@/components/theme-provider"
 import { Ticket, Users, Calendar, Menu, LogOut, Settings } from 'lucide-react'
 import InteractiveHoverButton from "@/components/ui/interactive-hover-button"
+import { UserMenu } from "./components/UserMenu"
 
 export default function Navbar() {
   const [scrollY, setScrollY] = useState(0)
@@ -141,31 +142,7 @@ export default function Navbar() {
 
           <div className="flex-1 flex items-center justify-end gap-2">
             {token ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="flex items-center gap-2">
-                    <Avatar className="h-8 w-8">
-                      <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-                      <AvatarFallback>CN</AvatarFallback>
-                    </Avatar>
-                    <span className="hidden md:inline text-lg font-bold">{name}</span>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-56">
-                  <DropdownMenuLabel>Minha Conta</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem asChild>
-                    <Link to="/management" className="flex items-center gap-2">
-                      <Settings className="h-4 w-4" />
-                      <span>Management</span>
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={handleLogout} className="text-red-600">
-                    <LogOut className="h-4 w-4 mr-2" />
-                    <span>Logout</span>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+             <UserMenu name={name} handleLogout={handleLogout} />
             ) : (
               <div className="flex items-center gap-2">
                 <Link to={import.meta.env.VITE_LOGIN_SIGN_UP}>
