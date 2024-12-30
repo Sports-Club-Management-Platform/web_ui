@@ -7,7 +7,11 @@ import { useEffect, useState } from "react"
 import { parseISO, isBefore } from "date-fns"
 import Hero from './components/Hero'
 import HighlightedGame from './components/HighlitedGame'
+import ScrollDisappearingButtons from './components/ScrollDisappearingButtons'
 import UpcomingGames from './components/UpcomingGames'
+import { BackgroundGradient } from '@/components/ui/background-gradient'
+import { BackgroundBeamsWithCollision } from "@/components/ui/background-beams-with-collision";
+
 
 const mockGames = [
   {
@@ -96,12 +100,22 @@ export default function LandingPage() {
   }
 
   return (
-    <div>
-      <Hero />
-      {highlightedGame && (
-        <HighlightedGame game={highlightedGame} isNextGame={isNextGame(highlightedGame)} />
-      )}
-      <UpcomingGames games={mockGames.slice(0, 3)} highlightedGame={highlightedGame} onGameClick={handleGameClick} />
+    <div className="relative min-h-screen">
+      <div className="fixed top-0 left-0 w-full z-0">
+        <Hero />
+      </div>
+      <ScrollDisappearingButtons />
+      <div className="relative z-10 pt-[100vh]"> {/* Adjust pt value based on Hero height */}
+        <BackgroundGradient className="rounded-[22px] p-4 sm:p-10 bg-background" containerClassName='mx-32'>
+          <BackgroundBeamsWithCollision className="absolute inset-0">ola</BackgroundBeamsWithCollision>
+          <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            {highlightedGame && (
+              <HighlightedGame game={highlightedGame} isNextGame={isNextGame(highlightedGame)} />
+            )}
+            <UpcomingGames games={mockGames.slice(0, 3)} highlightedGame={highlightedGame} onGameClick={handleGameClick} />
+          </div>
+        </BackgroundGradient>
+      </div>
     </div>
   )
 }
