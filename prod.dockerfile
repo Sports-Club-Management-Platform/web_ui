@@ -9,8 +9,17 @@ COPY package.json yarn.lock ./
 # Instalar as dependências
 RUN yarn install --silent
 
-# Copiar o restante do código e buildar
+# Copiar o restante do código e buildar com as variáveis de ambiente do ECS
 COPY . .
+
+# Passar as variáveis de ambiente para o build do Vite
+ARG VITE_LOGIN_SIGN_UP
+ARG VITE_DOMAIN
+
+ENV VITE_LOGIN_SIGN_UP=$VITE_LOGIN_SIGN_UP
+ENV VITE_DOMAIN=$VITE_DOMAIN
+
+# Construir o projeto
 RUN yarn build
 
 # Etapa 2: Produção
@@ -22,16 +31,8 @@ RUN rm -rf /usr/share/nginx/html/*
 # Copiar os arquivos estáticos gerados pelo build para o Nginx
 COPY --from=build /web_ui/dist /usr/share/nginx/html
 
-# Criar um script de entrada para definir variáveis do Terraform
-RUN echo '#!/bin/sh' > /docker-entrypoint.sh && \
-    echo 'echo "VITE_LOGIN_SIGN_UP=$VITE_LOGIN_SIGN_UP" > /usr/share/nginx/html/.env' >> /docker-entrypoint.sh && \
-    echo 'echo "VITE_DOMAIN=$DOMAIN" >> /usr/share/nginx/html/.env' >> /docker-entrypoint.sh && \
-    echo 'exec "$@"' >> /docker-entrypoint.sh && \
-    chmod +x /docker-entrypoint.sh
-
 # Expor a porta padrão do Nginx
 EXPOSE 80
 
-# Configurar o comando padrão para iniciar o Nginx com o script
-ENTRYPOINT ["/docker-entrypoint.sh"]
+# Configurar o comando padrão para iniciar o Nginx
 CMD ["nginx", "-g", "daemon off;"]
