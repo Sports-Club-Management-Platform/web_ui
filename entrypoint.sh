@@ -1,8 +1,8 @@
 #!/bin/sh
 
-# Substituir variáveis no runtime dentro do `index.html`
-envsubst < /usr/share/nginx/html/index.html > /usr/share/nginx/html/index.html.tmp
-mv /usr/share/nginx/html/index.html.tmp /usr/share/nginx/html/index.html
+# Criar o arquivo .env dentro do diretório onde o frontend espera encontrar
+echo "VITE_LOGIN_SIGN_UP=$VITE_LOGIN_SIGN_UP" > /usr/share/nginx/html/.env
+echo "VITE_DOMAIN=$VITE_DOMAIN" >> /usr/share/nginx/html/.env
 
 # Iniciar o Nginx
 exec "$@"
