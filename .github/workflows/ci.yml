@@ -39,5 +39,5 @@ jobs:
         with:
           token: ${{ secrets.ACTIONS_PAT }}
           repository: Sports-Club-Management-Platform/control-room
-          event-type: update-user-microservice
+          event-type: update-ui-microservice
           client-payload: '{"image_tag": "${{ github.sha }}"}'
