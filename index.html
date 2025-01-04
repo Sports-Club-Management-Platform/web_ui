@@ -1,17 +1,20 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/src/assets/CSC-SemFundo.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <!-- I don't know if this line is useful -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CSC</title>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="/src/assets/CSC-SemFundo.png" />
-  <link rel="manifest" href="/manifest.webmanifest" /> <!-- I don't know if this line is useful -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CSC</title>
-</head>
-
-<body>
-  <div id="root"></div>
-  <script type="module" src="/src/main.tsx"></script>
-</body>
-
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+    <script>
+      window.VITE_LOGIN_SIGN_UP = "$VITE_LOGIN_SIGN_UP";
+      window.VITE_DOMAIN = "$VITE_DOMAIN";
+    </script>
+  </body>
 </html>

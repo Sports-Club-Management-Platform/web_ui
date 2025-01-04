@@ -9,17 +9,8 @@ COPY package.json yarn.lock ./
 # Instalar as dependências
 RUN yarn install --silent
 
-# Copiar o restante do código e buildar com as variáveis de ambiente do ECS
+# Copiar o restante do código e buildar
 COPY . .
-
-# Passar as variáveis de ambiente para o build do Vite
-ARG VITE_LOGIN_SIGN_UP
-ARG VITE_DOMAIN
-
-ENV VITE_LOGIN_SIGN_UP=$VITE_LOGIN_SIGN_UP
-ENV VITE_DOMAIN=$VITE_DOMAIN
-
-# Construir o projeto
 RUN yarn build
 
 # Etapa 2: Produção
@@ -31,8 +22,13 @@ RUN rm -rf /usr/share/nginx/html/*
 # Copiar os arquivos estáticos gerados pelo build para o Nginx
 COPY --from=build /web_ui/dist /usr/share/nginx/html
 
+# Criar um script de inicialização para injetar variáveis de ambiente no runtime
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
 # Expor a porta padrão do Nginx
 EXPOSE 80
 
-# Configurar o comando padrão para iniciar o Nginx
+# Configurar o comando padrão para iniciar o Nginx com substituição dinâmica das variáveis
+ENTRYPOINT ["/entrypoint.sh"]
 CMD ["nginx", "-g", "daemon off;"]
