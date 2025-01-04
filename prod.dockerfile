@@ -1,9 +1,11 @@
-# Etapa 1: Build
+# ==============================
+# Etapa 1: Build do Frontend
+# ==============================
 FROM node:lts AS build
 
 WORKDIR /web_ui
 
-# Copiar apenas os arquivos necessários para instalar as dependências e buildar
+# Copiar apenas arquivos necessários para instalar dependências
 COPY package.json yarn.lock ./
 
 # Instalar as dependências
@@ -13,17 +15,30 @@ RUN yarn install --silent
 COPY . .
 RUN yarn build
 
-# Etapa 2: Produção
+# ==============================
+# Etapa 2: Produção com Nginx
+# ==============================
 FROM nginx:stable-alpine
 
-# Remover o arquivo de configuração padrão do Nginx
-RUN rm -rf /usr/share/nginx/html/*
+# Definir diretório de trabalho
+WORKDIR /usr/share/nginx/html
 
-# Copiar os arquivos estáticos gerados pelo build para o Nginx
-COPY --from=build /web_ui/dist /usr/share/nginx/html
+# Remover arquivos padrão do Nginx
+RUN rm -rf ./*
+
+# Copiar os arquivos do build para o Nginx
+COPY --from=build /web_ui/dist .
+
+# Copiar o script de entrada que criará `env-config.js` dinamicamente
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+# Copiar a configuração do Nginx
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Expor a porta padrão do Nginx
 EXPOSE 80
 
-# Configurar o comando padrão para iniciar o Nginx
+# Definir o script de entrada antes de iniciar o Nginx
+ENTRYPOINT ["/entrypoint.sh"]
 CMD ["nginx", "-g", "daemon off;"]

@@ -12,15 +12,16 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@/components/ui/sheet"
+} from "@/components/ui/sheet";
 import { useTheme } from "@/components/theme-provider";
 import { Home, Users, Calendar, Menu } from "lucide-react";
+import config from "@/config";
 
 export default function Navbar() {
   const [scrollY, setScrollY] = useState(0);
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
   const { token, name, logout: zustandLogout } = useUserStore();
-  const { theme } = useTheme()
+  const { theme } = useTheme();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -40,7 +41,7 @@ export default function Navbar() {
   const logout = async () => {
     const response = await UserService.logout();
     return response.data;
-  }
+  };
 
   const logoutMutation = useMutation({
     mutationFn: logout,
@@ -48,46 +49,86 @@ export default function Navbar() {
       console.log(data);
       zustandLogout();
       window.location.reload();
-      setIsOpen(false)
+      setIsOpen(false);
     },
     onError: (error) => {
       console.error("Logout falhou:", error);
-    }
+    },
   });
 
   const handleLogout = async () => {
     logoutMutation.mutate();
   };
-  
-  const logoSrc = theme === "special" 
-    ? "/src/assets/CSC-SemFundo-Special.png"
-    : "/src/assets/CSC-SemFundo.png"
-  
+
+  const logoSrc =
+    theme === "special"
+      ? "/src/assets/CSC-SemFundo-Special.png"
+      : "/src/assets/CSC-SemFundo.png";
+
   const NavItems = ({ inSheet = false }) => (
     <>
-      <Link to="/" onClick={() => setIsOpen(false)} className={`text-primary text-lg dark:text-white font-bold ${inSheet ? 'w-full' : ''}`}>
-        <Button variant="ghost" className={`flex items-center ${inSheet ? 'w-full justify-start' : ''}`}>
+      <Link
+        to="/"
+        onClick={() => setIsOpen(false)}
+        className={`text-primary text-lg dark:text-white font-bold ${
+          inSheet ? "w-full" : ""
+        }`}
+      >
+        <Button
+          variant="ghost"
+          className={`flex items-center ${
+            inSheet ? "w-full justify-start" : ""
+          }`}
+        >
           <Home className="text-primary text-lg mr-1 dark:text-white" />
           Home
         </Button>
       </Link>
-      <Link to="/socios" onClick={() => setIsOpen(false)} className={`text-primary text-lg dark:text-white font-bold ${inSheet ? 'w-full' : ''}`}>
-        <Button variant="ghost" className={`flex items-center ${inSheet ? 'w-full justify-start' : ''}`}>
+      <Link
+        to="/socios"
+        onClick={() => setIsOpen(false)}
+        className={`text-primary text-lg dark:text-white font-bold ${
+          inSheet ? "w-full" : ""
+        }`}
+      >
+        <Button
+          variant="ghost"
+          className={`flex items-center ${
+            inSheet ? "w-full justify-start" : ""
+          }`}
+        >
           <Users className="text-primary text-lg mr-1 dark:text-white" />
           Sócios
         </Button>
       </Link>
-      <Link to="/matches" onClick={() => setIsOpen(false)} className={`text-primary text-lg dark:text-white font-bold ${inSheet ? 'w-full' : ''}`}>
-        <Button variant="ghost" className={`flex items-center ${inSheet ? 'w-full justify-start' : ''}`}>
+      <Link
+        to="/matches"
+        onClick={() => setIsOpen(false)}
+        className={`text-primary text-lg dark:text-white font-bold ${
+          inSheet ? "w-full" : ""
+        }`}
+      >
+        <Button
+          variant="ghost"
+          className={`flex items-center ${
+            inSheet ? "w-full justify-start" : ""
+          }`}
+        >
           <Calendar className="text-primary text-lg mr-1 dark:text-white" />
           Jogos
         </Button>
       </Link>
     </>
-  )
+  );
 
   return (
-    <nav className={`fixed w-full z-10 transition-all duration-300 ease-linear ${scrollFactor > 0 ? 'bg-gradient-to-b from-background via-background dark:via-neutral-800 to-transparent' : ''}`}>
+    <nav
+      className={`fixed w-full z-10 transition-all duration-300 ease-linear ${
+        scrollFactor > 0
+          ? "bg-gradient-to-b from-background via-background dark:via-neutral-800 to-transparent"
+          : ""
+      }`}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center transition-all duration-300 ease-linear h-28">
           <div className="flex-1 flex items-center justify-start">
@@ -117,27 +158,40 @@ export default function Navbar() {
             <img
               src={logoSrc}
               alt="Candelária Sport Clube Logo"
-              className={`transition-all duration-300 ease-linear ${scrollFactor ? 'h-12 sm:h-16 md:h-20' : 'h-16 sm:h-20 md:h-24'}`} 
+              className={`transition-all duration-300 ease-linear ${
+                scrollFactor ? "h-12 sm:h-16 md:h-20" : "h-16 sm:h-20 md:h-24"
+              }`}
             />
           </div>
           <div className="flex-1 flex items-center justify-end">
             {token ? (
               <div className="flex items-center">
                 <Avatar className="mr-2">
-                  <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                  <AvatarImage
+                    src="https://github.com/shadcn.png"
+                    alt="@shadcn"
+                  />
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
                 <div className="hidden md:block text-primary mr-2 text-lg dark:text-white font-bold">
                   {name}
                 </div>
-                <Button onClick={handleLogout} variant="outline" className="mr-2">Logout</Button>
+                <Button
+                  onClick={handleLogout}
+                  variant="outline"
+                  className="mr-2"
+                >
+                  Logout
+                </Button>
               </div>
             ) : (
               <div>
-                <Link to={import.meta.env.VITE_LOGIN_SIGN_UP}>
-                  <Button variant="outline" className="mr-2">Login</Button>
+                <Link to={config.VITE_LOGIN_SIGN_UP}>
+                  <Button variant="outline" className="mr-2">
+                    Login
+                  </Button>
                 </Link>
-                <Link to={import.meta.env.VITE_LOGIN_SIGN_UP}>
+                <Link to={config.VITE_LOGIN_SIGN_UP}>
                   <Button className="mr-2">Register</Button>
                 </Link>
               </div>
@@ -147,5 +201,5 @@ export default function Navbar() {
         </div>
       </div>
     </nav>
-  )
+  );
 }
