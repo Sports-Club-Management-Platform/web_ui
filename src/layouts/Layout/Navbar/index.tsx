@@ -15,7 +15,6 @@ import {
 } from "@/components/ui/sheet";
 import { useTheme } from "@/components/theme-provider";
 import { Home, Users, Calendar, Menu } from "lucide-react";
-import config from "@/config";
 
 export default function Navbar() {
   const [scrollY, setScrollY] = useState(0);
@@ -186,12 +185,12 @@ export default function Navbar() {
               </div>
             ) : (
               <div>
-                <Link to={config.VITE_LOGIN_SIGN_UP}>
+                <Link to={import.meta.env.VITE_LOGIN_SIGN_UP}>
                   <Button variant="outline" className="mr-2">
                     Login
                   </Button>
                 </Link>
-                <Link to={config.VITE_LOGIN_SIGN_UP}>
+                <Link to={import.meta.env.VITE_LOGIN_SIGN_UP}>
                   <Button className="mr-2">Register</Button>
                 </Link>
               </div>
