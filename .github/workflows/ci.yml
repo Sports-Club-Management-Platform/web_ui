@@ -30,6 +30,7 @@ jobs:
           ECR_REPOSITORY: ${{ vars.AWS_ECR_URL }}
           IMAGE_TAG: ${{ github.sha }}
           VITE_LOGIN_SIGN_UP: ${{ secrets.VITE_LOGIN_SIGN_UP }}
+          VITE_DOMAIN: ${{ secrets.VITE_DOMAIN }}
         run: |
           docker build \
             --build-arg VITE_LOGIN_SIGN_UP=$VITE_LOGIN_SIGN_UP \
