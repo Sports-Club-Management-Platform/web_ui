@@ -1,65 +1,92 @@
-import React, { useState } from 'react'
-import { Sidebar, SidebarContent } from "@/components/ui/sidebar"
-import NavbarHeader from './components/NavbarHeader'
-import NavbarContent from './components/NavbarContent'
-import NavbarFooter from './components/NavbarFooter'
-import { useUserStore } from "@/stores/useUserStore";
+"use client"
+
+import * as React from "react"
+import { Bell, Calendar, CreditCard, Home, LifeBuoy, Send, Settings, Ticket, Users } from 'lucide-react'
+
+import { NavMain } from "./components/nav-main"
+import { NavUser } from "./components/nav-user"
+import { TeamSwitcher } from "./components/team-switcher"
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarHeader,
+  SidebarRail,
+} from "@/components/ui/sidebar"
 import { useMutation } from "@tanstack/react-query";
 import { UserService } from "@/services/Client/UserService";
 import { useNavigate } from 'react-router-dom'
-import { motion } from 'framer-motion'
+import { useUserStore } from "@/stores/useUserStore";
 
-const Navbar: React.FC = () => {
-  const { token, name, logout: zustandLogout, email } = useUserStore();
-  const navigate = useNavigate();
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
-  const logout = async () => {
-    const response = await UserService.logout();
-    return response.data;
-  }
-
-  const logoutMutation = useMutation({
-    mutationFn: logout,
-    onSuccess: (data) => {
-      console.log(data);
-      zustandLogout();
-    },
-    onError: (error) => {
-      console.error("Logout falhou:", error);
-    }
-  });
-
-  const handleLogout = () => {
-    logoutMutation.mutate();
-    navigate('/');
-  }
-
-  return (
-    <motion.div
-      onMouseEnter={() => setIsExpanded(true)}
-      onMouseLeave={() => !isDropdownOpen && setIsExpanded(false)}
-      animate={{ width: isExpanded ? "240px" : "100px" }}
-      transition={{ duration: 0.3 }}
-    >
-      <Sidebar variant="inset" collapsible={isExpanded ? "none" : "icon"}>
-        <SidebarContent>
-          <NavbarHeader isExpanded={isExpanded} />
-          <NavbarContent isExpanded={isExpanded} />
-          <NavbarFooter 
-            token={token} 
-            name={name} 
-            email={email} 
-            onLogout={handleLogout}
-            isExpanded={isExpanded}
-            onDropdownOpenChange={setIsDropdownOpen}
-            isDropdownOpen={isDropdownOpen}
-          />
-        </SidebarContent>
-      </Sidebar>
-    </motion.div>
-  )
+// This is sample data.
+const data = {
+  navMain: [
+    { title: "Home", url: "/", icon: Home },
+    { title: "Jogos", url: "/matches", icon: Calendar },
+    { title: "Sócios", url: "/members", icon: Users },
+  ],
+  navManagement: [
+    { title: "Sócios", url: "/management/members", icon: Users },
+    { title: "Bilhetes", url: "/management/tickets", icon: Ticket },
+  ],
+  navAccount: [
+    { title: "Settings", url: "/account/settings", icon: Settings },
+    { title: "Billing", url: "/account/billing", icon: CreditCard },
+    { title: "Notifications", url: "/account/notifications", icon: Bell },
+  ],
+  navSecondary: [
+    { title: "Support", url: "#", icon: LifeBuoy },
+    { title: "Feedback", url: "#", icon: Send },
+  ],
 }
 
-export default Navbar
+export function Navbar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+    const { token, name, logout: zustandLogout, email } = useUserStore();
+    const navigate = useNavigate();
+
+    const logout = async () => {
+      const response = await UserService.logout();
+      return response.data;
+    }
+
+    const logoutMutation = useMutation({
+      mutationFn: logout,
+      onSuccess: (data) => {
+        console.log(data);
+        zustandLogout();
+      },
+      onError: (error) => {
+        console.error("Logout falhou:", error);
+      }
+    });
+
+    const handleLogout = () => {
+      logoutMutation.mutate();
+      navigate('/');
+    }
+
+  return (
+    <Sidebar collapsible="icon" {...props}>
+      <SidebarHeader>
+        <TeamSwitcher/>
+      </SidebarHeader>
+      <SidebarContent>
+        <NavMain 
+          navMain={data.navMain}
+          navManagement={data.navManagement}
+          navAccount={data.navAccount}
+          navSecondary={data.navSecondary}
+        />
+      </SidebarContent>
+      <SidebarFooter>
+        <NavUser 
+          token={token} 
+          name={name} 
+          email={email} 
+          onLogout={handleLogout}
+        />
+      </SidebarFooter>
+      <SidebarRail />
+    </Sidebar>
+  )
+}

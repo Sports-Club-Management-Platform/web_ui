@@ -87,3 +87,29 @@ export interface TicketResponse {
     stripe_price_id: string
     stripe_image_url: string
 }
+
+export interface TicketPost {
+    game_id: number
+    name: string
+    description: string
+    active: boolean
+    price: number
+    image: File
+    stock: number
+}
+
+export interface TicketUpdate {
+    name: string
+    description: string
+    active: boolean
+    stock: number
+}
+
+export interface TicketBuy {
+    user_id: string
+    ticket_id: number
+    quantity: number
+    total_price: number
+    created_at: string
+    updated_at: string
+}

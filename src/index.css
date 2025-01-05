@@ -113,6 +113,13 @@
     --color-3: 210 100% 63%;
     --color-4: 195 100% 63%;
     --color-5: 90 100% 63%;
+    --sidebar-background: 40 10% 19%;
+    --sidebar-foreground: 40 9% 13%;
+    --sidebar-primary: 40 9% 80%;
+    --sidebar-primary-foreground: 40 30% 30%;
+    --sidebar-accent: 40 9% 13%;
+    --sidebar-accent-foreground: 40 18% 40%;
+    --sidebar-border: 40 9% 13%;
   }
 }
 

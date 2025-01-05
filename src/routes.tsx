@@ -136,7 +136,7 @@ const routes = [
     element: <AdminLayout />,
     children: [
       {
-        path: "/management/members",
+        path: "/management/tickets",
         element: (
             <Suspense fallback={<div>Loading...</div>}>
               <ProtectedRoute>

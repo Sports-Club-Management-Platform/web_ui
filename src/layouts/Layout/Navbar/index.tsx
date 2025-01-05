@@ -5,17 +5,8 @@ import { Link } from "react-router-dom"
 import { ModeToggle } from "@/components/mode-toggle"
 import { useEffect, useState } from "react"
 import { useUserStore } from "@/stores/useUserStore"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { useMutation } from "@tanstack/react-query"
 import { UserService } from "@/services/Client/UserService"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 import {
   Sheet,
   SheetContent,

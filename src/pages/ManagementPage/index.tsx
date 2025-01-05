@@ -96,7 +96,7 @@ export default function MatchesPage() {
   }
 
   return (
-    <div className="container pt-16 mx-auto p-4 space-y-6">
+    <div className="container pt-12 mx-auto p-4 space-y-6">
 
       <div className="text-center mb-8">
         <h1 className="text-4xl font-bold mb-2">Ticket Management</h1>

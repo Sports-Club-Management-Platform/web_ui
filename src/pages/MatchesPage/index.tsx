@@ -13,6 +13,8 @@ import { ClubService } from "@/services/Client/ClubService"
 import { useQuery } from "@tanstack/react-query"
 import {TicketResponse} from "../../lib/types.ts";
 import {TicketService} from "../../services/Client/TicketService.tsx";
+import { DotPattern } from "@/components/ui/dot-pattern.tsx"
+import { cn } from "@/lib/utils.ts"
 
 export default function MatchesPage() {
   const [filtro, setFiltro] = useState("todos")
@@ -117,6 +119,11 @@ export default function MatchesPage() {
       {jogosFiltrados.length === 0 && (
         <p className="text-center text-muted-foreground mt-8">Nenhum jogo encontrado para os filtros selecionados.</p>
       )}
+      <DotPattern
+        className={cn(
+          "[mask-image:radial-gradient(10000px_circle_at_center,rgba(255,255,255,0.2),transparent)]"
+        )}
+      />
     </div>
   )
 }

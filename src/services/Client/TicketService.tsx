@@ -1,15 +1,40 @@
 import {createClient} from "./client.tsx";
 import config from "../../config";
+import { TicketPost, TicketUpdate, TicketBuy } from "@/lib/types.ts";
 
 const client = createClient(config.API_TICKETS_URL);
 
 const TicketService = {
   async getTickets() {
-    return client.get("/");
+    return client.get("");
   },
+
+  async getTicketById(ticketId: string) {
+    return client.get(`/${ticketId}`);
+  },
+  
   async getTicketByGameId(gameId: string) {
     return client.get(`/game/${gameId}`);
   },
+  async createTicket(ticket: TicketPost) {
+    return client.post("", ticket);
+  },
+
+  async updateTicket(ticketId: string, ticket: TicketUpdate) {
+    return client.put(`/${ticketId}`, ticket);
+  },
+
+  async deleteTicket(ticketId: string) {
+    return client.delete(`/${ticketId}`);
+  },
+
+  async buyTicket(ticket: TicketBuy) {
+    return client.post("/buy", ticket);
+  },
+
+
+
+
 }
 
 export { TicketService };
