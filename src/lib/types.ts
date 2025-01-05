@@ -94,8 +94,8 @@ export interface TicketPost {
     description: string
     active: boolean
     price: number
-    image: File
     stock: number
+    image: unknown
 }
 
 export interface TicketUpdate {

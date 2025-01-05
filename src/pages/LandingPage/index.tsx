@@ -53,7 +53,6 @@ const mockGames = [
 ]
 
 export default function LandingPage() {
-  const { token, setUserInformation } = useUserStore()
   const [highlightedGame, setHighlightedGame] = useState<{
     id: number;
     data: string;
@@ -64,24 +63,6 @@ export default function LandingPage() {
     imagemB: string;
   } | null>(null)
 
-  console.log("Token acessado na LandingPage:", token)
-
-  const fetchUser = async () => {
-    const response = await UserService.getUser()
-    return response.data
-  }
-  const { data } = useQuery({
-    queryKey: ["user"],
-    queryFn: fetchUser,
-    enabled: !!token,
-  })
-
-  useEffect(() => {
-    console.log("Data do usuário:", data)
-    if (data && token) {
-      setUserInformation(data)
-    }
-  }, [data, setUserInformation, token])
 
   useEffect(() => {
     if (mockGames.length > 0) {

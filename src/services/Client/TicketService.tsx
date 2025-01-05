@@ -16,8 +16,24 @@ const TicketService = {
   async getTicketByGameId(gameId: string) {
     return client.get(`/game/${gameId}`);
   },
+  
   async createTicket(ticket: TicketPost) {
-    return client.post("", ticket);
+    const formData = new FormData();
+
+    // Append all ticket fields to FormData
+    Object.entries(ticket).forEach(([key, value]) => {
+      if (key === 'image' && value instanceof File) {
+        formData.append('image', value, value.name);
+      } else {
+        formData.append(key, value.toString());
+      }
+    });
+
+    return client.post("", formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
   },
 
   async updateTicket(ticketId: string, ticket: TicketUpdate) {

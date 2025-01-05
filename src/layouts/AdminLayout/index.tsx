@@ -13,9 +13,31 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar"
+import { UserService } from "@/services/Client/UserService"
+import { useUserStore } from "@/stores/useUserStore"
+import { useQuery } from "@tanstack/react-query"
+import { useEffect } from "react"
 import { Outlet } from "react-router-dom"
 
 export const AdminLayout = () => {
+  const { token, setUserInformation } = useUserStore()
+
+  const fetchUser = async () => {
+    const response = await UserService.getUser()
+    return response.data
+  }
+  const { data } = useQuery({
+    queryKey: ["user"],
+    queryFn: fetchUser,
+    enabled: !!token,
+  })
+
+  useEffect(() => {
+    console.log("Data do usuário:", data)
+    if (data && token) {
+      setUserInformation(data)
+    }
+  }, [data, setUserInformation, token])
   return (
     <SidebarProvider>
       <Navbar />

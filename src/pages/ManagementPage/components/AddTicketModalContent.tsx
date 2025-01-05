@@ -17,10 +17,10 @@ import { Input } from "@/components/ui/input"
 import { ModalContent, ModalFooter, useModal } from "@/components/ui/animated-modal"
 import { Switch } from "@/components/ui/switch"
 import { FileUpload } from "@/components/ui/file-upload"
-import { useQuery } from "@tanstack/react-query"
+import { QueryClient, useQuery, useQueryClient } from "@tanstack/react-query"
 import { GamesService } from "@/services/Client/GamesService"
 import { TicketService } from "@/services/Client/TicketService"
-import { GameResponse } from "@/lib/types"
+import { GameResponse, TicketPost } from "@/lib/types"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useState } from "react"
 import { useMutation } from "@tanstack/react-query"
@@ -37,12 +37,7 @@ const formSchema = z.object({
   price: z.number().positive({
     message: "Preço deve ser um valor positivo.",
   }),
-  image: z.instanceof(File).refine((file) => file.size <= 5000000, {
-    message: "A imagem deve ter no máximo 5MB.",
-  }).refine(
-    (file) => ['image/jpeg', 'image/png', 'image/webp'].includes(file.type),
-    "Apenas arquivos JPEG, PNG e WebP são permitidos."
-  ),
+  image: z.any(),
   stock: z.number().int().positive({
     message: "Quantidade em estoque deve ser um número positivo.",
   }),
@@ -50,6 +45,7 @@ const formSchema = z.object({
 
 export function AddTicketModalContent() {
   const { setOpen } = useModal()
+  const queryClient = useQueryClient()
   const [selectedGame, setSelectedGame] = useState("")
 
   const { data: jogos = [] } = useQuery<GameResponse[]>({
@@ -61,13 +57,15 @@ export function AddTicketModalContent() {
   })
 
   const createTicket = async (data: z.infer<typeof formSchema>) => {
-    console.log(data)
+  
     const apiData = {
-        ...data,
-        game_id: parseInt(data.game_id),
-    }
-    const response = await TicketService.createTicket(apiData)
-    return response.data
+      ...data,
+      game_id: parseInt(data.game_id),
+    };
+  
+    const response = await TicketService.createTicket(apiData as TicketPost);
+    setOpen(false);
+    return response.data;
   }
 
   const createTicketMutation = useMutation({
@@ -77,7 +75,8 @@ export function AddTicketModalContent() {
     },
     onSuccess: () => {
         console.log("Ticket criado com sucesso!")
-        }
+        queryClient.invalidateQueries("tickets")
+        },
   })
 
   
@@ -92,9 +91,6 @@ export function AddTicketModalContent() {
     try {
         // Here you would send the data to your API
         await createTicketMutation.mutateAsync(values)
-        // Close the modal after successful submission
-        setOpen(false)
-        // Reset the form
         form.reset()
     } catch (error) {
       console.error('Error submitting form:', error)
