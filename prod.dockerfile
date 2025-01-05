@@ -9,6 +9,12 @@ COPY package.json yarn.lock ./
 # Instalar as dependências
 RUN yarn install --silent
 
+# Definir variáveis de ambiente durante o build
+ARG VITE_LOGIN_SIGN_UP
+ENV VITE_LOGIN_SIGN_UP=${VITE_LOGIN_SIGN_UP}
+ARG VITE_DOMAIN
+ENV VITE_DOMAIN=${VITE_DOMAIN}
+
 # Copiar o restante do código e buildar
 COPY . .
 RUN yarn build

@@ -1,9 +1,9 @@
 name: CI Pipeline
 
 on:
+  workflow_dispatch:
   push:
-    branches:
-      - main
+    branches: [main]
 
 jobs:
   build:
@@ -29,8 +29,13 @@ jobs:
         env:
           ECR_REPOSITORY: ${{ vars.AWS_ECR_URL }}
           IMAGE_TAG: ${{ github.sha }}
+          VITE_LOGIN_SIGN_UP: ${{ secrets.VITE_LOGIN_SIGN_UP }}
+          VITE_DOMAIN: ${{ secrets.VITE_DOMAIN }}
         run: |
-          docker build -t $ECR_REPOSITORY:$IMAGE_TAG -f prod.dockerfile .
+          docker build \
+            --build-arg VITE_LOGIN_SIGN_UP=$VITE_LOGIN_SIGN_UP \
+            --build-arg VITE_DOMAIN=$VITE_DOMAIN \
+            -t $ECR_REPOSITORY:$IMAGE_TAG -f prod.dockerfile .
           docker push $ECR_REPOSITORY:$IMAGE_TAG
           echo "$ECR_REPOSITORY:$IMAGE_TAG"
 
@@ -39,5 +44,5 @@ jobs:
         with:
           token: ${{ secrets.ACTIONS_PAT }}
           repository: Sports-Club-Management-Platform/control-room
-          event-type: update-user-microservice
+          event-type: update-ui-microservice
           client-payload: '{"image_tag": "${{ github.sha }}"}'

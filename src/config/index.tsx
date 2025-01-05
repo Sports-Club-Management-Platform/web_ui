@@ -1,13 +1,13 @@
 let HOST, BASE_URL_USER, BASE_URL_GAME, BASE_URL_PAYMENTS, BASE_URL_TICKET;
 
 const scheme = {
-    HTTP: 'http://',
-    HTTPS: 'https://',
+  HTTP: "http://",
+  HTTPS: "https://",
 };
 
 if (import.meta.env.PROD) {
-    HOST = 'www.google.com';
-    // BASE_URL = `${scheme.HTTPS}${HOST}`;
+  HOST = "www.google.com";
+  // BASE_URL = `${scheme.HTTPS}${HOST}`;
 } else {
     HOST = 'localhost';
     BASE_URL_USER = `${scheme.HTTP}${HOST}:8000`;
