@@ -1,7 +1,5 @@
 "use client"
 
-import * as React from "react"
-import { ChevronsUpDown } from "lucide-react"
 import CSCLogo from "@/assets/CSC-SemFundo.png";
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar"
 

@@ -8,7 +8,7 @@ import PreviewDialog from "./preview-dialog.tsx";
 
 export interface TicketColumn {
   ticket: TicketResponse
-  game: GameResponse
+  game: GameResponse | undefined
   home_club: ClubResponse | undefined
   visitor_club: ClubResponse | undefined
 }
@@ -86,13 +86,13 @@ export const columns: ColumnDef<TicketColumn>[] = [
   {
     header: "Data",
     cell: ({ row }) => {
-      return <>{format(parseISO(row.original.game.date_time), "d MMMM 'de' yyyy", { locale: pt })}</>
+      return <>{row.original.game ? format(parseISO(row.original.game.date_time), "d MMMM 'de' yyyy", { locale: pt }) : "N/A"}</>
     },
   },
   {
     header: "Hora",
     cell: ({ row }) => {
-      return <>{format(parseISO(row.original.game.date_time), "HH:mm")}</>
+      return <>{row.original.game ? format(parseISO(row.original.game.date_time), "HH:mm") : "N/A"}</>
     },
   },
   {

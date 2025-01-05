@@ -1,9 +1,8 @@
 import React from "react"
 import { cn } from "@/lib/utils"
-import { motion } from "framer-motion"
+import { motion, HTMLMotionProps } from "framer-motion"
 
-interface ThemeButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {}
+type ThemeButtonProps = HTMLMotionProps<"button"> & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 export function ThemeButton({
   children,

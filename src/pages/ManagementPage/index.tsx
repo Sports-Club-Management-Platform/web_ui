@@ -46,12 +46,12 @@ export default function MatchesPage() {
   const getClubById = (id: number) => clubs.find(club => club.id === id)
 
   const columnData: TicketColumn[] = tickets.map((ticket: TicketResponse): TicketColumn => {
-    const game: GameResponse = jogos.find(game => game.id === ticket.game_id);
+    const game: GameResponse | undefined = jogos.find(game => game.id === ticket.game_id);
     return {
       ticket: ticket,
       game: game,
-      home_club: getClubById(game?.club_home_id),
-      visitor_club: getClubById(game?.club_visitor_id)
+      home_club: game ? getClubById(game.club_home_id) : undefined,
+      visitor_club: game ? getClubById(game.club_visitor_id) : undefined,
     };
   });
 
@@ -73,12 +73,12 @@ export default function MatchesPage() {
 
   const filtrarPorData = (ticket: TicketColumn) => {
     if (!dataFiltro) return true
-    return isSameDay(parseISO(ticket.game.date_time), dataFiltro)
+    return ticket.game ? isSameDay(parseISO(ticket.game.date_time), dataFiltro) : false
   }
 
   const filtrarJogosFuturos = (ticket: TicketColumn) => {
     if (dataFiltro) return true
-    return filtro === "futuros" ? parseISO(ticket.game.date_time) > dataAtual : true
+    return filtro === "futuros" ? ticket.game && parseISO(ticket.game.date_time) > dataAtual : true
   }
 
   // why is this not working

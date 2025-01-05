@@ -14,7 +14,7 @@ function ProtectedRoute({
   redirect?: string;
 }) {
   const [isLoading, setIsLoading] = useState(true);
-  const { token } = useUserStore((state: string) => state);
+  const token = useUserStore((state) => state.token);
 
   useEffect(() => {
     setIsLoading(false);

@@ -1,7 +1,5 @@
 import {Button} from "../../../components/ui/button.tsx";
 import {TextSearch} from "lucide-react";
-import {Label} from "../../../components/ui/label.tsx";
-import {Input} from "../../../components/ui/input.tsx";
 import {TicketColumn} from "./columns.tsx";
 import {
   Dialog,

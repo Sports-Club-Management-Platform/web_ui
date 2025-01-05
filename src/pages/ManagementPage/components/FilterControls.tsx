@@ -2,11 +2,10 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Calendar } from "@/components/ui/calendar"
-import { CalendarIcon, Plus, Search, X } from 'lucide-react'
+import { CalendarIcon, Search, X } from 'lucide-react'
 import { format } from "date-fns"
 import { pt } from "date-fns/locale"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import InteractiveHoverButton from "@/components/ui/interactive-hover-button"
 import { Modal, ModalTrigger, ModalBody } from '@/components/ui/animated-modal'
 import { AddTicketModalContent } from './AddTicketModalContent'
 
@@ -40,8 +39,8 @@ export default function FilterControls({
           <PopoverContent className="w-auto p-0">
             <Calendar
               mode="single"
-              selected={dataFiltro}
-              onSelect={setDataFiltro}
+              selected={dataFiltro || undefined}
+              onSelect={(date) => setDataFiltro(date ?? null)}
               initialFocus
             />
           </PopoverContent>

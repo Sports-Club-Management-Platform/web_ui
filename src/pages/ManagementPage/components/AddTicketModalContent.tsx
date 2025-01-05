@@ -17,7 +17,7 @@ import { Input } from "@/components/ui/input"
 import { ModalContent, ModalFooter, useModal } from "@/components/ui/animated-modal"
 import { Switch } from "@/components/ui/switch"
 import { FileUpload } from "@/components/ui/file-upload"
-import { QueryClient, useQuery, useQueryClient } from "@tanstack/react-query"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { GamesService } from "@/services/Client/GamesService"
 import { TicketService } from "@/services/Client/TicketService"
 import { GameResponse, TicketPost } from "@/lib/types"
@@ -75,7 +75,7 @@ export function AddTicketModalContent() {
     },
     onSuccess: () => {
         console.log("Ticket criado com sucesso!")
-        queryClient.invalidateQueries("tickets")
+        queryClient.invalidateQueries({ queryKey: ["tickets"] })
         },
   })
 
@@ -209,7 +209,7 @@ export function AddTicketModalContent() {
               <FormField
                 control={form.control}
                 name="image"
-                render={({ field: { onChange, value, ...rest } }) => (
+                render={({ field: { onChange, value } }) => (
                   <FormItem>
                     <FormLabel>Imagem</FormLabel>
                     <FormControl>

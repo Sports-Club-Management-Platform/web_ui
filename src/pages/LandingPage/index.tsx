@@ -1,8 +1,5 @@
 "use client"
 
-import { useQuery } from '@tanstack/react-query'
-import { useUserStore } from '@/stores/useUserStore'
-import { UserService } from "@/services/Client/UserService"
 import { useEffect, useState } from "react"
 import { parseISO, isBefore } from "date-fns"
 import Hero from './components/Hero'
