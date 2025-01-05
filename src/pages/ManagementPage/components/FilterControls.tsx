@@ -2,10 +2,13 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Calendar } from "@/components/ui/calendar"
-import { Calendar as CalendarIcon, Search, X } from "lucide-react"
+import { CalendarIcon, Plus, Search, X } from 'lucide-react'
 import { format } from "date-fns"
 import { pt } from "date-fns/locale"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import InteractiveHoverButton from "@/components/ui/interactive-hover-button"
+import { Modal, ModalTrigger, ModalBody } from '@/components/ui/animated-modal'
+import { AddTicketModalContent } from './AddTicketModalContent'
 
 interface FilterControlsProps {
   filtro: string
@@ -37,8 +40,8 @@ export default function FilterControls({
           <PopoverContent className="w-auto p-0">
             <Calendar
               mode="single"
-              selected={dataFiltro ?? undefined}
-              onSelect={(date) => setDataFiltro(date ?? null)}
+              selected={dataFiltro}
+              onSelect={setDataFiltro}
               initialFocus
             />
           </PopoverContent>
@@ -48,6 +51,14 @@ export default function FilterControls({
             <X className="h-4 w-4" />
           </Button>
         )}
+        <Modal>
+          <ModalTrigger className="w-[200px] rounded-lg">
+            Adicionar Ticket
+          </ModalTrigger>
+          <ModalBody>
+            <AddTicketModalContent />
+          </ModalBody>
+        </Modal>
       </div>
       <div className="flex space-x-2 w-full md:w-auto">
         <div className="relative flex-grow md:w-64">

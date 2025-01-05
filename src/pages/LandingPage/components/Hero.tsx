@@ -1,5 +1,4 @@
-import { Button } from "@/components/ui/button"
-import { Link } from "react-router-dom"
+import GradualSpacing from "@/components/ui/gradual-spacing"
 
 export default function Hero() {
   return (
@@ -10,15 +9,14 @@ export default function Hero() {
       ></div>
       <div className="absolute inset-0 bg-black opacity-20"></div>
       <div className="relative flex-grow bg-black bg-opacity-50 flex flex-col items-center justify-center text-white">
-        <h1 className="text-4xl md:text-6xl font-bold mb-4 text-center">
-          Bem-vindo à plataforma do Candelária Sport Clube!
-        </h1>
-        <div className="space-x-4">
-          <Button size="lg">Tornar-se Sócio</Button>
-          <Link to="/matches">
-            <Button size="lg">Comprar Bilhetes</Button>
-          </Link>
-        </div>
+        <GradualSpacing
+          className="font-display text-center text-4xl mb-4 font-bold -tracking-widest text-white md:text-7xl md:leading-[5rem]"
+          text="Bem-vindo à plataforma do"
+        />
+        <GradualSpacing
+          className="font-display text-center text-4xl mb-4 font-bold -tracking-widest text-white md:text-7xl md:leading-[5rem]"
+          text="Candelária Sport Clube"
+        />
       </div>
     </div>
   )
