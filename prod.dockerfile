@@ -29,6 +29,9 @@ RUN rm -rf /usr/share/nginx/html/*
 # Copiar os arquivos estáticos gerados pelo build para o Nginx
 COPY --from=build /web_ui/dist /usr/share/nginx/html
 
+# Copiar o arquivo de configuração customizado do Nginx
+COPY nginx/default.conf /etc/nginx/conf.d/default.conf
+
 # Expor a porta padrão do Nginx
 EXPOSE 80
 
