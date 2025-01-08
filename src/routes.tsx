@@ -109,6 +109,14 @@ const routes = [
         exact: true,
       },
       {
+        path: "/oauth2/idpresponse",
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <RedirectPage />
+          </Suspense>
+        ),
+      },
+      {
         path: "/404",
         element: (
           <Suspense fallback={<div>Loading...</div>}>
@@ -124,30 +132,21 @@ const routes = [
     ],
   },
   {
-    path: "/oauth2/idpresponse",
-    element: (
-      <Suspense fallback={<div>Loading...</div>}>
-        <RedirectPage />
-      </Suspense>
-    ),
-  },
-  {
     path: "/",
     element: <AdminLayout />,
     children: [
       {
         path: "/management/tickets",
         element: (
-            <Suspense fallback={<div>Loading...</div>}>
-              <ProtectedRoute>
-                <ManagementPage />
-              </ProtectedRoute>
-            </Suspense>
+          <Suspense fallback={<div>Loading...</div>}>
+            <ProtectedRoute>
+              <ManagementPage />
+            </ProtectedRoute>
+          </Suspense>
         ),
       },
     ],
   },
-
 ];
 
 export { routes };
