@@ -4,6 +4,7 @@ export interface UserResponse {
     name: string;
     username: string;
     updated_at: string;
+    admin: boolean;
 }
 
 //games 

@@ -1,49 +1,20 @@
 import { CleanLayout } from "./layouts/Layout";
 import { AdminLayout } from "./layouts/AdminLayout";
-import { lazy, Suspense, ReactNode, useEffect, useState } from "react";
+import { Suspense } from "react";
 import { Navigate } from "react-router-dom";
-import { useUserStore } from "@/stores/useUserStore";
-
-function ProtectedRoute({
-  children,
-  loggedIn = true,
-  redirect = import.meta.env.VITE_LOGIN_SIGN_UP,
-}: {
-  children: ReactNode;
-  loggedIn?: boolean;
-  redirect?: string;
-}) {
-  const [isLoading, setIsLoading] = useState(true);
-  const { token } = useUserStore((state: string) => state);
-
-  useEffect(() => {
-    setIsLoading(false);
-  }, [token]);
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (loggedIn && !token) {
-    return <Navigate to={redirect} />;
-  } else if (!loggedIn && token) {
-    return <Navigate to="/" />;
-  }
-
-  return children;
-}
-
-const LandingPage = lazy(() => import("./pages/LandingPage"));
-const RedirectPage = lazy(() => import("./pages/RedirectPage"));
-const MatchesPage = lazy(() => import("./pages/MatchesPage"));
-const ManagementPage = lazy(() => import("./pages/ManagementPage"));
-const TicketPurchasePage = lazy(() => import("./pages/TicketPurchasePage"));
-const GeneralError = lazy(() => import("./pages/ErrorPages/GeneralError"));
-const MaintenanceError = lazy(
-  () => import("./pages/ErrorPages/MaintenanceError")
-);
-const NotFoundError = lazy(() => import("./pages/ErrorPages/NotFoundError"));
-const CheckoutPage = lazy(() => import("./pages/CheckoutPage"));
+import {
+  LandingPage,
+  RedirectPage,
+  MatchesPage,
+  ManagementPage,
+  TicketPurchasePage,
+  GeneralError,
+  MaintenanceError,
+  NotFoundError,
+  CheckoutPage
+} from "@/lib/pages";
+import { ProtectedRoute } from "@/lib/ProtectedRoute";
+import { AdminRoute } from "@/lib/AdminRoute";
 
 const routes = [
   {
@@ -139,9 +110,9 @@ const routes = [
         path: "/management/tickets",
         element: (
             <Suspense fallback={<div>Loading...</div>}>
-              <ProtectedRoute>
+              <AdminRoute>
                 <ManagementPage />
-              </ProtectedRoute>
+              </AdminRoute>
             </Suspense>
         ),
       },

@@ -10,6 +10,7 @@ interface UserState {
     username: string;
     id: string;
     updatedAt: string;
+    admin: boolean;
 }
 
 type UserActions = {
@@ -25,6 +26,7 @@ export const useUserStore = create<UserState & UserActions>((set) => ({
     username: '',
     id: '',
     updatedAt: '',
+    admin: false,
 
     login: (token) => {
         localStorage.setItem('token', token);
@@ -36,7 +38,8 @@ export const useUserStore = create<UserState & UserActions>((set) => ({
             username: data.username,
             id: data.id,
             name: data.name,
-            updatedAt: data.updated_at
+            updatedAt: data.updated_at,
+            admin: data.admin,
         });
     },
     logout: () => {
@@ -47,6 +50,7 @@ export const useUserStore = create<UserState & UserActions>((set) => ({
             username: '',
             id: '',
             updatedAt: '',
+            admin: false,
         });
         localStorage.removeItem('token');
     },
