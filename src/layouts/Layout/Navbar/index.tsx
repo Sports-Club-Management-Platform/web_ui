@@ -15,7 +15,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { useTheme } from "@/components/theme-provider"
-import { Ticket, Users, Calendar, Menu, LogOut, Settings } from 'lucide-react'
+import { Ticket, Users, Calendar, Menu, Settings } from 'lucide-react'
 import InteractiveHoverButton from "@/components/ui/interactive-hover-button"
 import { UserMenu } from "./components/UserMenu"
 

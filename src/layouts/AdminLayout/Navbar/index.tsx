@@ -41,7 +41,7 @@ const data = {
 }
 
 export function Navbar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-    const { token, name, logout: zustandLogout, email } = useUserStore();
+    const { name, logout: zustandLogout, email } = useUserStore();
     const navigate = useNavigate();
 
     const logout = async () => {
@@ -80,7 +80,6 @@ export function Navbar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarContent>
       <SidebarFooter>
         <NavUser 
-          token={token} 
           name={name} 
           email={email} 
           onLogout={handleLogout}

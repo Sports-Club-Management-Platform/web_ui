@@ -6,8 +6,11 @@ const scheme = {
 };
 
 if (import.meta.env.PROD) {
-  HOST = "www.google.com";
-  // BASE_URL = `${scheme.HTTPS}${HOST}`;
+  HOST = import.meta.env.VITE_DOMAIN;
+  BASE_URL_USER = `${scheme.HTTPS}${HOST}/users/v1`;
+  BASE_URL_TICKET = `${scheme.HTTPS}${HOST}/tickets/v1`;
+  BASE_URL_GAME = `${scheme.HTTPS}${HOST}/games/v1`;
+  BASE_URL_PAYMENTS = `${scheme.HTTPS}${HOST}/payments/v1`;
 } else {
     HOST = 'localhost';
     BASE_URL_USER = `${scheme.HTTP}${HOST}:8000`;

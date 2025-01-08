@@ -19,7 +19,7 @@ export default function TicketPurchasePage() {
 
   const { data: ticket, isLoading: isLoadingTicket, error: ticketError} = useQuery<TicketResponse>({
     queryKey: ["ticket"],
-    queryFn: () => TicketService.getTicketByGameId(gameId).then(response=> response.data),
+    queryFn: () => TicketService.getTicketByGameId(gameId as string).then(response=> response.data),
   })
 
   const { data: game, isLoading: isLoadingGame, error: gameError } = useQuery<GameResponse>({
@@ -51,7 +51,7 @@ export default function TicketPurchasePage() {
   }
 
   if (gameError || !game) {
-    if (gameError?.status === 404) {
+    if (gameError?.name === "NotFoundError") {
       // game does not exist
       navigate("/404")
     }
@@ -64,7 +64,7 @@ export default function TicketPurchasePage() {
   }
 
   if (ticketError || !ticket) {
-    if (ticketError?.status === 404) {
+    if (ticketError?.name === "NotFoundError") {
       // game does not exist
       navigate("/404")
     }

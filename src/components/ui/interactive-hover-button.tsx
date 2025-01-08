@@ -1,7 +1,6 @@
 import React from "react";
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, LucideIcon } from 'lucide-react';
 import { cn } from "@/lib/utils";
-import { TypeIcon as type, LucideIcon } from 'lucide-react';
 
 type ButtonVariant = "default" | "primary" | "secondary" | "danger" | "ghost" | "underline";
 

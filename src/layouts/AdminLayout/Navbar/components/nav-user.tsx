@@ -36,7 +36,7 @@ interface NavbarFooterProps {
   onLogout: () => void;
 }
 
-export function NavUser({ token, name, email, onLogout }: NavbarFooterProps) {
+export function NavUser({ name, email, onLogout }: NavbarFooterProps) {
   
   const { isMobile } = useSidebar()
 
