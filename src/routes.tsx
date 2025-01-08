@@ -109,14 +109,6 @@ const routes = [
         exact: true,
       },
       {
-        path: "/oauth2/idpresponse",
-        element: (
-          <Suspense fallback={<div>Loading...</div>}>
-            <RedirectPage />
-          </Suspense>
-        ),
-      },
-      {
         path: "/404",
         element: (
           <Suspense fallback={<div>Loading...</div>}>
@@ -130,6 +122,14 @@ const routes = [
         element: <Navigate to="/404" />,
       },
     ],
+  },
+  {
+    path: "/oauth2/idpresponse",
+    element: (
+      <Suspense fallback={<div>Loading...</div>}>
+        <RedirectPage />
+      </Suspense>
+    ),
   },
   {
     path: "/",
