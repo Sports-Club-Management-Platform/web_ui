@@ -1,4 +1,16 @@
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
 function CheckoutPage({ message }: { message: string }) {
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    setTimeout(() => {
+      navigate("/");
+    }, 3000);
+  }, [navigate]);
+
   return (
     <div className="h-screen flex items-center justify-center bg-gray-100">
       <div className="flex flex-col items-center gap-4 p-6 bg-white rounded-lg shadow-md">

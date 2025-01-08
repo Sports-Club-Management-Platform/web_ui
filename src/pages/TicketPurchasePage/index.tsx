@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { useParams } from "react-router-dom"
+import {useNavigate, useParams} from "react-router-dom"
 import GameHeader from "./components/GameHeader"
 import TicketSelection from "./components/TicketSelection"
 import { GameResponse, PavilionResponse } from "@/lib/types"
@@ -9,10 +9,18 @@ import { useQuery } from "@tanstack/react-query"
 import { GamesService } from "@/services/Client/GamesService"
 import { PavilionsService } from "@/services/Client/PavilionsService"
 import { Skeleton } from "@/components/ui/skeleton"
+import {TicketService} from "@/services/Client/TicketService.tsx";
+import {TicketResponse} from "../../lib/types.ts";
 
 export default function TicketPurchasePage() {
   const { gameId } = useParams()
-  const [selectedTickets, setSelectedTickets] = useState(1)
+  const [selectedNumberTickets, setSelectedNumberTickets] = useState(1)
+  const navigate = useNavigate();
+
+  const { data: ticket, isLoading: isLoadingTicket, error: ticketError} = useQuery<TicketResponse>({
+    queryKey: ["ticket"],
+    queryFn: () => TicketService.getTicketByGameId(gameId as string).then(response=> response.data),
+  })
 
   const { data: game, isLoading: isLoadingGame, error: gameError } = useQuery<GameResponse>({
     queryKey: ["game", gameId],
@@ -27,10 +35,10 @@ export default function TicketPurchasePage() {
   })
 
   const handleTicketChange = (quantity: number) => {
-    setSelectedTickets(quantity)
+    setSelectedNumberTickets(quantity)
   }
 
-  if (isLoadingGame || isLoadingPavilion) {
+  if (isLoadingGame || isLoadingPavilion || isLoadingTicket) {
     return (
       <div className="min-h-screen pt-36 container mx-auto px-4 py-8">
         <Skeleton className="w-full h-64 mb-8" />
@@ -43,10 +51,27 @@ export default function TicketPurchasePage() {
   }
 
   if (gameError || !game) {
+    if (gameError?.name === "NotFoundError") {
+      // game does not exist
+      navigate("/404")
+    }
     return (
       <div className="min-h-screen pt-36 container mx-auto px-4 py-8 text-center">
         <h1 className="text-4xl font-bold mb-4">Error</h1>
         <p>Unable to load game information. Please try again later.</p>
+      </div>
+    )
+  }
+
+  if (ticketError || !ticket) {
+    if (ticketError?.name === "NotFoundError") {
+      // game does not exist
+      navigate("/404")
+    }
+    return (
+      <div className="min-h-screen pt-36 container mx-auto px-4 py-8 text-center">
+        <h1 className="text-4xl font-bold mb-4">Error</h1>
+        <p>Unable to load ticket information. Please try again later.</p>
       </div>
     )
   }
@@ -64,7 +89,8 @@ export default function TicketPurchasePage() {
         {pavilion && <GameHeader game={game} pavilion={pavilion} />}
         <div className="grid grid-cols-1 gap-8">
           <TicketSelection
-            selectedTickets={selectedTickets}
+            selectedNumberTickets={selectedNumberTickets}
+            ticketData={ticket}
             onTicketChange={handleTicketChange}
           />
         </div>

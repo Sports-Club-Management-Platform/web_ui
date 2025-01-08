@@ -19,7 +19,7 @@ type UserActions = {
 };
 
 export const useUserStore = create<UserState & UserActions>((set) => ({
-    token: '',
+    token: localStorage.getItem('token') || '',
     email: '',
     name: '',
     username: '',
@@ -27,6 +27,7 @@ export const useUserStore = create<UserState & UserActions>((set) => ({
     updatedAt: '',
 
     login: (token) => {
+        localStorage.setItem('token', token);
         set({token});
     },
     setUserInformation: (data: UserResponse) => {
@@ -47,6 +48,7 @@ export const useUserStore = create<UserState & UserActions>((set) => ({
             id: '',
             updatedAt: '',
         });
+        localStorage.removeItem('token');
     },
 }));
 

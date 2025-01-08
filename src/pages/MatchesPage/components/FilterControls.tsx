@@ -53,7 +53,7 @@ export default function FilterControls({
         <div className="relative flex-grow md:w-64">
           <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder="Pesquisar por data ou equipe"
+            placeholder="Pesquisar por data ou equipa"
             value={pesquisa}
             onChange={(e) => setPesquisa(e.target.value)}
             className="pl-8"
