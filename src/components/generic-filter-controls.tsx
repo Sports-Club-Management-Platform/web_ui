@@ -3,9 +3,9 @@
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Search, X } from 'lucide-react'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Modal, ModalTrigger, ModalBody } from '@/components/ui/animated-modal'
 import { DateRangePicker } from "@/components/ui/date-range-picker"
+import { JornadaSelect } from "./jornada-select"
 
 interface DateRange {
   from: Date;
@@ -71,41 +71,7 @@ export default function GenericFilterControls({
             className="pl-8"
           />
         </div>
-        <Select value={filtro} onValueChange={setFiltro} disabled={!!dataFiltro}>
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Selecione o período" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="futuros">Jogos Futuros</SelectItem>
-            <SelectItem value="todos">Todos os jogos</SelectItem>
-            <SelectItem value="1">1ª Jornada</SelectItem>
-            <SelectItem value="2">2ª Jornada</SelectItem>
-            <SelectItem value="3">3ª Jornada</SelectItem>
-            <SelectItem value="4">4ª Jornada</SelectItem>
-            <SelectItem value="5">5ª Jornada</SelectItem>
-            <SelectItem value="6">6ª Jornada</SelectItem>
-            <SelectItem value="7">7ª Jornada</SelectItem>
-            <SelectItem value="8">8ª Jornada</SelectItem>
-            <SelectItem value="9">9ª Jornada</SelectItem>
-            <SelectItem value="10">10ª Jornada</SelectItem>
-            <SelectItem value="11">11ª Jornada</SelectItem>
-            <SelectItem value="12">12ª Jornada</SelectItem>
-            <SelectItem value="13">13ª Jornada</SelectItem>
-            <SelectItem value="14">14ª Jornada</SelectItem>
-            <SelectItem value="15">15ª Jornada</SelectItem>
-            <SelectItem value="16">16ª Jornada</SelectItem>
-            <SelectItem value="17">17ª Jornada</SelectItem>
-            <SelectItem value="18">18ª Jornada</SelectItem>
-            <SelectItem value="19">19ª Jornada</SelectItem>
-            <SelectItem value="20">20ª Jornada</SelectItem>
-            <SelectItem value="21">21ª Jornada</SelectItem>
-            <SelectItem value="22">22ª Jornada</SelectItem>
-            <SelectItem value="23">23ª Jornada</SelectItem>
-            <SelectItem value="24">24ª Jornada</SelectItem>
-            <SelectItem value="25">25ª Jornada</SelectItem>
-            <SelectItem value="26">26ª Jornada</SelectItem>
-          </SelectContent>
-        </Select>
+        <JornadaSelect value={filtro} onValueChange={setFiltro} disabled={!!dataFiltro} />
       </div>
     </div>
   )
