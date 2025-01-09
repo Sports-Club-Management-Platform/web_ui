@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Bell, Calendar, CreditCard, Home, LifeBuoy, Send, Settings, Ticket, Users } from 'lucide-react'
+import { Bell, Calendar, CreditCard, Home, LifeBuoy, Send, Settings, Ticket, Users, Volleyball } from 'lucide-react'
 
 import { NavMain } from "./components/nav-main"
 import { NavUser } from "./components/nav-user"
@@ -28,10 +28,10 @@ const data = {
   navManagement: [
     { title: "Sócios", url: "/management/members", icon: Users },
     { title: "Bilhetes", url: "/management/tickets", icon: Ticket },
+    { title: "Jogos", url: "/management/games", icon: Volleyball },
   ],
   navAccount: [
     { title: "Settings", url: "/account/settings", icon: Settings },
-    { title: "Billing", url: "/account/billing", icon: CreditCard },
     { title: "Notifications", url: "/account/notifications", icon: Bell },
   ],
   navSecondary: [

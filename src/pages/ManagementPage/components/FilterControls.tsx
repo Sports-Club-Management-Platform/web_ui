@@ -1,11 +1,12 @@
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Search, X } from 'lucide-react'
+import { Check, Search, X } from 'lucide-react'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Modal, ModalTrigger, ModalBody } from '@/components/ui/animated-modal'
 import { AddTicketModalContent } from './AddTicketModalContent'
 import { DateRangePicker } from "@/components/ui/date-range-picker"
 import { pt } from "date-fns/locale"
+import { ValidateTicketModalContent } from "./ValidateTicketModalContent"
 
 interface FilterControlsProps {
   filtro: string
@@ -46,6 +47,14 @@ export default function FilterControls({
           </ModalTrigger>
           <ModalBody>
             <AddTicketModalContent />
+          </ModalBody>
+        </Modal>
+        <Modal>
+          <ModalTrigger className="w-[200px] hover:bg-yellow-600 bg-yellow-600 rounded-lg" variant="secondary" text="Validar Ticket" icon={Check}>
+            Validar Ticket
+          </ModalTrigger>
+          <ModalBody>
+            <ValidateTicketModalContent />
           </ModalBody>
         </Modal>
       </div>
