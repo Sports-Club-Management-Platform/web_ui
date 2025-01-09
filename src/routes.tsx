@@ -11,7 +11,8 @@ import {
   GeneralError,
   MaintenanceError,
   NotFoundError,
-  CheckoutPage
+  CheckoutPage,
+  ManageGamesPage
 } from "@/lib/pages";
 import { AdminRoute } from "@/lib/AdminRoute";
 
@@ -115,6 +116,16 @@ const routes = [
             </Suspense>
         ),
       },
+      {
+        path: "/management/games",
+        element: (
+            <Suspense fallback={<div>Loading...</div>}>
+              <AdminRoute>
+                <ManageGamesPage />
+              </AdminRoute>
+            </Suspense>
+        ),
+      }
     ],
   },
 ];
