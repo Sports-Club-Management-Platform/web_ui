@@ -48,8 +48,9 @@ const TicketService = {
     return client.post("/buy", ticket);
   },
 
-
-
+  async validateTicket(ticketId: string) {
+    return client.post(`/${ticketId}/validate`);
+  }
 
 }
 
