@@ -7,30 +7,36 @@ import { motion } from "framer-motion"
 import { useTheme } from "@/components/theme-provider"
 import { Link } from "react-router-dom"
 import { GameResponse, ClubResponse } from "@/lib/types"
-import {TicketResponse} from "../../../lib/types.ts";
-
+import {TicketWithStockResponse} from "@/lib/types.ts";
+import { useUserStore } from "@/stores/useUserStore"
 interface GameCardProps {
   jogo: GameResponse
-  ticket: TicketResponse | undefined
+  ticket: TicketWithStockResponse | undefined
   clubs: ClubResponse[]
   index: number
   dataAtual: Date
 }
 
 export default function GameCard({ jogo, ticket, clubs, index, dataAtual }: GameCardProps) {
-  const getBilheteStatus = (jogo: GameResponse) => {
+
+  const token = useUserStore(state => state.token)
+
+  const getBilheteStatus = (jogo: GameResponse, ticket: TicketWithStockResponse | undefined) => {
     const jogoData = parseISO(jogo.date_time)
     if (isBefore(jogoData, dataAtual)) {
       return { color: "bg-gray-500", text: "Jogo Encerrado", animation: "none" }
-    } else if (ticket){
-      // If it exists ticket for game
-      // might not sell tickets for all games
-      return { color: "bg-green-500", text: "Disponível", animation: "pulse" }
+    } else if (ticket) {
+      const stockNumber = ticket.stock?.stock ?? 0
+      if (stockNumber <= 5) {
+        return { color: "bg-red-500", text: "Últimos bilhetes!", animation: "pulse" }
+      } else if (stockNumber <= 10) {
+        return { color: "bg-yellow-500", text: "Poucos Bilhetes Disponíveis", animation: "pulse" }
+      } else {
+        return { color: "bg-green-500", text: "Bilhetes Disponíveis", animation: "pulse" }
+      }
     } else {
       return { color: "bg-red-500", text: "Indisponível para Venda", animation: "none" }
     }
-    // You might want to add logic here to determine ticket availability
-
   }
 
   const { theme } = useTheme()
@@ -44,7 +50,7 @@ export default function GameCard({ jogo, ticket, clubs, index, dataAtual }: Game
     }
   }
 
-  const bilheteStatus = getBilheteStatus(jogo)
+  const bilheteStatus = getBilheteStatus(jogo, ticket)
   const isJogoPassado = isBefore(parseISO(jogo.date_time), dataAtual)
 
   const clubeCasa = clubs.find(club => club.id === jogo.club_home_id)
@@ -94,13 +100,15 @@ export default function GameCard({ jogo, ticket, clubs, index, dataAtual }: Game
               <MapPin className="h-4 w-4" />
               <span>{clubeCasa?.name}</span>
             </div>
-            {!isJogoPassado && ticket && (
+            {!isJogoPassado && ticket && token ? (
               <Link to={`/ticket-purchase/${jogo.id}`}>
                 <Button variant="outline" size="sm" className="ml-2">
                   <Ticket className="h-4 w-4 mr-2" />
                   Comprar Bilhetes
                 </Button>
               </Link>
+            ) : (
+              <div className="h-8"></div> // Placeholder para manter a altura consistente
             )}
           </div>
         </CardContent>

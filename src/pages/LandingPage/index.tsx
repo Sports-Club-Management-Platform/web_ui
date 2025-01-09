@@ -85,7 +85,7 @@ export default function LandingPage() {
       <ScrollDisappearingButtons />
       <div className="relative z-10 pt-[100vh]"> {/* Adjust pt value based on Hero height */}
         <BackgroundGradient className="rounded-[22px] p-4 sm:p-10 bg-background" containerClassName='mx-32'>
-          <BackgroundBeamsWithCollision className="absolute inset-0">ola</BackgroundBeamsWithCollision>
+          <BackgroundBeamsWithCollision className="absolute inset-0">l</BackgroundBeamsWithCollision>
           <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             {highlightedGame && (
               <HighlightedGame game={highlightedGame} isNextGame={isNextGame(highlightedGame)} />
