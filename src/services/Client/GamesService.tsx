@@ -14,10 +14,10 @@ const GamesService = {
   async createGame(data: GamePost) {
     return client.post("", data);
   },
-  async updateGame(id: string, data: GamePost) {
+  async updateGame(id: number, data: GamePost) {
     return client.put(`/${id}`, data);
   },
-  async deleteGame(id: string) {
+  async deleteGame(id: number) {
     return client.delete(`/${id}`);
   },
 };

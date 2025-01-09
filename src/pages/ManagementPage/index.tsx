@@ -8,9 +8,9 @@ import { GamesService } from "@/services/Client/GamesService"
 import { ClubService } from "@/services/Client/ClubService"
 import { useQuery, useQueries } from "@tanstack/react-query"
 import {columns, ComprehensiveTicketData} from "./components/columns.tsx";
-import {DataTable} from "./components/data-table.tsx";
-import {TicketResponse} from "../../lib/types.ts";
-import {TicketService} from "../../services/Client/TicketService.tsx";
+import {DataTable} from "@/components/data-table.tsx";
+import {TicketResponse} from "@/lib/types.ts";
+import {TicketService} from "@/services/Client/TicketService.tsx";
 import { PaymentsService } from "@/services/Client/PaymentsService"
 import { ColumnDef } from "@tanstack/react-table"
 
@@ -126,7 +126,7 @@ export default function MatchesPage() {
   return (
     <div className="container pt-12 mx-auto p-4 space-y-6">
       <div className="text-center mb-8">
-        <h1 className="text-4xl font-bold mb-2">Ticket Management</h1>
+        <h1 className="text-4xl font-bold mb-2">Gestão de Tickets</h1>
         <p className="text-xl text-muted-foreground">Gerencie todos os jogos e os seus ingressos!</p>
       </div>
 
