@@ -117,7 +117,6 @@ const routes = [
       },
     ],
   },
-
 ];
 
 export { routes };

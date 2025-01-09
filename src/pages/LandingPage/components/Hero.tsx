@@ -1,4 +1,4 @@
-import GradualSpacing from "@/components/ui/gradual-spacing"
+import GradualSpacing from "@/components/ui/gradual-spacing";
 
 export default function Hero() {
   return (
@@ -19,5 +19,5 @@ export default function Hero() {
         />
       </div>
     </div>
-  )
+  );
 }

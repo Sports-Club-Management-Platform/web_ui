@@ -20,17 +20,19 @@ ENV VITE_PROD=true
 COPY . .
 RUN yarn build
 
-# Etapa 2: Produção
-FROM nginx:stable-alpine
+# Etapa 2: Produção (Sem Nginx, usando serve)
+FROM node:lts-alpine
 
-# Remover o arquivo de configuração padrão do Nginx
-RUN rm -rf /usr/share/nginx/html/*
+WORKDIR /web_ui
 
-# Copiar os arquivos estáticos gerados pelo build para o Nginx
-COPY --from=build /web_ui/dist /usr/share/nginx/html
+# Instalar um servidor estático simples
+RUN npm install -g serve
 
-# Expor a porta padrão do Nginx
-EXPOSE 80
+# Copiar os arquivos do build
+COPY --from=build /web_ui/dist /web_ui
 
-# Configurar o comando padrão para iniciar o Nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Expor a porta padrão do servidor
+EXPOSE 8080
+
+# Comando para iniciar o servidor estático
+CMD ["serve", "-s", "/web_ui", "-l", "8080"]
