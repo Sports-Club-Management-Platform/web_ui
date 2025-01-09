@@ -274,11 +274,8 @@ export function AddTicketModalContent() {
           </form>
         </Form>
       </ModalContent>
-      <ModalFooter className="border-t sticky bottom-0 bg-background z-10">
-        <div className="flex justify-end space-x-2">
-          <Button variant="outline" onClick={() => setOpen(false)}>
-            Cancelar
-          </Button>
+      <ModalFooter className="border-t sticky justify-center bottom-0 bg-background z-10">
+        <div className="flex justify-center space-x-2">
           {createTicketMutation.isPending ? (
             <Button disabled>
               <Loader2 className="animate-spin h-5 w-5" />
@@ -288,6 +285,9 @@ export function AddTicketModalContent() {
               Adicionar Ticket
             </Button>
           )}
+          <Button variant="outline" onClick={() => setOpen(false)}>
+            Cancelar
+          </Button>
         </div>
       </ModalFooter>
     </div>

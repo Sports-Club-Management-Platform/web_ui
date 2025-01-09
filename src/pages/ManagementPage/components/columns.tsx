@@ -6,7 +6,7 @@ import { format, parseISO } from "date-fns"
 import { pt } from "date-fns/locale"
 import PreviewDialog from "./preview-dialog.tsx"
 import { ArrowUpDown } from 'lucide-react'
-import { Button } from "@/components/ui/button"
+import { EditModal } from "./EditTicket/EditModal.tsx"
 
 export interface ComprehensiveTicketData {
   ticket: TicketResponse
@@ -209,15 +209,15 @@ export const columns: ColumnDef<ComprehensiveTicketData>[] = [
     cell: ({ row }) => {
       const ticket = row.original.ticket
       return (
-        <Button
-          onClick={() => {
-            console.log("Edit ticket:", ticket)
+        <EditModal 
+          ticketId={ticket.id}
+          defaultValues={{
+            name: ticket.name,
+            description: ticket.description,
+            active: ticket.active,
+            stock: row.original.fullStockData?.stock || 0
           }}
-          variant="outline"
-          size="sm"
-        >
-          Edit
-        </Button>
+        />
       )
     },
   },
