@@ -20,6 +20,10 @@ const ClubService = {
   async deleteClub(id: string) {
     return client.delete(`/${id}`);
   },
+
+  async getPavilionByClubId(id: string) {
+    return client.get(`/${id}/pavilion`);
+  },
 };
 
 export { ClubService };

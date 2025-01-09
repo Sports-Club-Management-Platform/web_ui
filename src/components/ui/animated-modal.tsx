@@ -11,7 +11,7 @@ import React, {
   useState,
 } from "react";
 import InteractiveHoverButton, {ButtonVariant} from "./interactive-hover-button";
-import { Plus, LucideIcon } from 'lucide-react';
+import { LucideIcon, Plus } from 'lucide-react';
 import { Button } from "./button";
 
 interface ModalContextType {

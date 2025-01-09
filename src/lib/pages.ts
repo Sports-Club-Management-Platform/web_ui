@@ -9,3 +9,4 @@ export const GeneralError = lazy(() => import("../pages/ErrorPages/GeneralError"
 export const MaintenanceError = lazy(() => import("../pages/ErrorPages/MaintenanceError"));
 export const NotFoundError = lazy(() => import("../pages/ErrorPages/NotFoundError"));
 export const CheckoutPage = lazy(() => import("../pages/CheckoutPage"));
+export const ManageGamesPage = lazy(() => import("../pages/ManageGamesPage"));
