@@ -49,7 +49,7 @@ const TicketService = {
   },
 
   async validateTicket(ticketId: string) {
-    return client.post(`/${ticketId}/validate`);
+    return client.put(`/${ticketId}/validate`);
   }
 
 }
