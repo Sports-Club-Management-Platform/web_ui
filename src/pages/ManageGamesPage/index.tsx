@@ -8,7 +8,7 @@ import { ClubService } from "@/services/Client/ClubService"
 import { GameResponse, ClubResponse } from "@/lib/types"
 import { columns } from "./components/columns"
 import { DataTable } from "./components/data-table"
-import FilterControls from "./components/FilterControls"
+import GameFilterControls from "./components/GameFilterControls"
 import { ColumnDef } from "@tanstack/react-table"
 
 interface DateRange {
@@ -19,11 +19,6 @@ interface DateRange {
 interface ComprehensiveGameData extends GameResponse {
   home_club?: ClubResponse;
   visitor_club?: ClubResponse;
-}
-
-interface DateRange {
-  from: Date;
-  to?: Date;
 }
 
 export default function ManageGamesPage() {
@@ -112,7 +107,7 @@ export default function ManageGamesPage() {
       </div>
 
       <div className="container mx-auto">
-        <FilterControls
+        <GameFilterControls
           filtro={filtro}
           setFiltro={setFiltro}
           pesquisa={pesquisa}

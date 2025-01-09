@@ -53,7 +53,7 @@ export function DeleteGameDialog({ gameId }: DeleteGameDialogProps) {
   return (
     <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
       <AlertDialogTrigger asChild>
-        <Button variant={"ghost"} size="sm">Eliminar jogo</Button>
+        <Button variant={"ghost"} size="sm" className="-translate-x-3">Eliminar jogo</Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>

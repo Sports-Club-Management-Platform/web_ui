@@ -5,7 +5,6 @@ import { Input } from "@/components/ui/input"
 import { Search, X } from 'lucide-react'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Modal, ModalTrigger, ModalBody } from '@/components/ui/animated-modal'
-import { AddGameModalContent } from './AddGameModalContent'
 import { DateRangePicker } from "@/components/ui/date-range-picker"
 
 interface DateRange {
@@ -20,15 +19,21 @@ interface FilterControlsProps {
   readonly setPesquisa: (pesquisa: string) => void;
   readonly dataFiltro: DateRange | null;
   readonly setDataFiltro: (data: DateRange | null) => void;
+  readonly addButtonText: string;
+  readonly addModalContent: React.ReactNode;
+  readonly extraButtons?: React.ReactNode;
 }
 
-export default function FilterControls({
+export default function GenericFilterControls({
   filtro,
   setFiltro,
   pesquisa,
   setPesquisa,
   dataFiltro,
-  setDataFiltro
+  setDataFiltro,
+  addButtonText,
+  addModalContent,
+  extraButtons
 }: FilterControlsProps) {
   return (
     <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 md:space-x-4">
@@ -47,13 +52,14 @@ export default function FilterControls({
           </Button>
         )}
         <Modal>
-          <ModalTrigger className="w-[200px] rounded-lg" variant="primary" text="Adicionar Jogo">
-            Adicionar Jogo
+          <ModalTrigger className="w-[200px] rounded-lg" variant="primary" text={addButtonText}>
+            {addButtonText}
           </ModalTrigger>
           <ModalBody className="w-full max-w-3xl">
-            <AddGameModalContent />
+            {addModalContent}
           </ModalBody>
         </Modal>
+        {extraButtons}
       </div>
       <div className="flex space-x-2 w-full md:w-auto">
         <div className="relative flex-grow md:w-64">
