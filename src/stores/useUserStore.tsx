@@ -32,16 +32,6 @@ export const useUserStore = create<UserState & UserActions>((set) => ({
         localStorage.setItem('token', token);
         set({token});
     },
-    setUserInformation: (data: UserResponse) => {
-        set({
-            email: data.email,
-            username: data.username,
-            id: data.id,
-            name: data.name,
-            updatedAt: data.updated_at,
-            admin: data.admin,
-        });
-    },
     logout: () => {
         set({
             token: '',
@@ -54,5 +44,15 @@ export const useUserStore = create<UserState & UserActions>((set) => ({
         });
         localStorage.removeItem('token');
     },
+    setUserInformation: (data: UserResponse) => {
+            set({
+                email: data.email,
+                name: data.name,
+                username: data.username,
+                id: data.id,
+                updatedAt: data.updated_at,
+                admin: data.admin,
+            });
+        }
 }));
 

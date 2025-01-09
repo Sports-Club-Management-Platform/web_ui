@@ -10,7 +10,15 @@ import React, {
   useState,
 } from "react";
 import InteractiveHoverButton from "./interactive-hover-button";
-import { Plus } from "lucide-react";
+import { Plus, type LucideIcon } from 'lucide-react';
+
+interface ModalTriggerProps {
+  children?: ReactNode;
+  className?: string;
+  variant?: "primary" | "secondary" | "ghost";
+  text?: string;
+  icon?: LucideIcon;
+}
 
 interface ModalContextType {
   open: boolean;
@@ -41,22 +49,20 @@ export function Modal({ children }: { children: ReactNode }) {
   return <ModalProvider>{children}</ModalProvider>;
 }
 
-export const ModalTrigger = ({
+export const ModalTrigger: React.FC<ModalTriggerProps> = ({
   children,
   className,
-}: {
-  children: ReactNode;
-  className?: string;
+  variant = "primary",
+  text = "Open Modal",
+  icon: Icon = Plus,
 }) => {
   const { setOpen } = useModal();
   return (
     <InteractiveHoverButton
-      variant="primary"
-      className={cn(
-        className
-      )}
-      text="Adicionar Ticket"
-      icon={Plus}
+      variant={variant}
+      className={cn(className)}
+      text={text}
+      icon={Icon}
       onClick={() => setOpen(true)}
     >
       {children}

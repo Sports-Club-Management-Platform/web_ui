@@ -1,6 +1,6 @@
 "use client"
 
-import CSCLogo from "@/assets/CSC-SemFundo.png";
+import CSCLogo from "/CSC-SemFundo.png";
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar"
 
 export function TeamSwitcher() {

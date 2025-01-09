@@ -15,6 +15,7 @@ import {
 } from "@/lib/pages";
 import { ProtectedRoute } from "@/lib/ProtectedRoute";
 import { AdminRoute } from "@/lib/AdminRoute";
+import { LoadingPage } from "@/components/LoadingPage";
 
 const routes = [
   {

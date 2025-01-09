@@ -1,21 +1,19 @@
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { Calendar } from "@/components/ui/calendar"
-import { CalendarIcon, Search, X } from 'lucide-react'
-import { format } from "date-fns"
-import { pt } from "date-fns/locale"
+import { Search, X } from 'lucide-react'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Modal, ModalTrigger, ModalBody } from '@/components/ui/animated-modal'
 import { AddTicketModalContent } from './AddTicketModalContent'
+import { DateRangePicker } from "@/components/ui/date-range-picker"
+import { pt } from "date-fns/locale"
 
 interface FilterControlsProps {
   filtro: string
   setFiltro: (filtro: string) => void
   pesquisa: string
   setPesquisa: (pesquisa: string) => void
-  dataFiltro: Date | null
-  setDataFiltro: (data: Date | null) => void
+  dataFiltro: { from: Date; to: Date | undefined } | null
+  setDataFiltro: (data: { from: Date; to: Date | undefined } | null) => void
 }
 
 export default function FilterControls({
@@ -29,29 +27,21 @@ export default function FilterControls({
   return (
     <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 md:space-x-4">
       <div className="flex flex-wrap justify-center md:justify-start gap-2">
-        <Popover>
-          <PopoverTrigger asChild>
-            <Button variant="outline" className="w-[280px] justify-start text-left font-normal">
-              <CalendarIcon className="mr-2 h-4 w-4" />
-              {dataFiltro ? format(dataFiltro, "PPP", { locale: pt }) : <span>Selecionar data</span>}
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-auto p-0">
-            <Calendar
-              mode="single"
-              selected={dataFiltro || undefined}
-              onSelect={(date) => setDataFiltro(date ?? null)}
-              initialFocus
-            />
-          </PopoverContent>
-        </Popover>
+        <DateRangePicker
+          onUpdate={({ range }) => setDataFiltro(range)}
+          initialDateFrom={dataFiltro?.from}
+          initialDateTo={dataFiltro?.to}
+          align="start"
+          locale={pt}
+          showCompare={false}
+        />
         {dataFiltro && (
           <Button variant="ghost" onClick={() => setDataFiltro(null)} size="icon">
             <X className="h-4 w-4" />
           </Button>
         )}
         <Modal>
-          <ModalTrigger className="w-[200px] rounded-lg">
+          <ModalTrigger className="w-[200px] rounded-lg" variant="primary" text="Adicionar Ticket">
             Adicionar Ticket
           </ModalTrigger>
           <ModalBody>

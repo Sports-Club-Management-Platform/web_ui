@@ -24,6 +24,7 @@ import { GameResponse, TicketPost } from "@/lib/types"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useState } from "react"
 import { useMutation } from "@tanstack/react-query"
+import { Loader2 } from "lucide-react"
 
 const formSchema = z.object({
   game_id: z.string().min(1, { message: "Por favor, selecione um jogo." }),
@@ -37,7 +38,12 @@ const formSchema = z.object({
   price: z.number().positive({
     message: "Preço deve ser um valor positivo.",
   }),
-  image: z.any(),
+  image: z.instanceof(File).refine((file) => file.size <= 5000000, {
+    message: "A imagem deve ter no máximo 5MB.",
+  }).refine(
+    (file) => ['image/jpeg', 'image/png', 'image/webp'].includes(file.type),
+    "Apenas arquivos JPEG, PNG e WebP são permitidos."
+  ),
   stock: z.number().int().positive({
     message: "Quantidade em estoque deve ser um número positivo.",
   }),
@@ -273,9 +279,15 @@ export function AddTicketModalContent() {
           <Button variant="outline" onClick={() => setOpen(false)}>
             Cancelar
           </Button>
-          <Button type="submit" onClick={form.handleSubmit(onSubmit)}>
-            Adicionar Ticket
-          </Button>
+          {createTicketMutation.isPending ? (
+            <Button disabled>
+              <Loader2 className="animate-spin h-5 w-5" />
+            </Button>
+          ) : (
+            <Button type="submit" onClick={form.handleSubmit(onSubmit)}>
+              Adicionar Ticket
+            </Button>
+          )}
         </div>
       </ModalFooter>
     </div>

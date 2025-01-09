@@ -9,6 +9,10 @@ const PaymentsService = {
         `?price_id=${price_id}&quantity=${quantity}`
     );
   },
+
+  async getTicketStock(ticket_id: number) {
+    return client.get(`/stock/${ticket_id}`);
+  }
 };
 
 export { PaymentsService };

@@ -60,8 +60,8 @@ export default function Navbar() {
   }
   
   const logoSrc = theme === "special" 
-    ? "/src/assets/CSC-SemFundo-Special.png"
-    : "/src/assets/CSC-SemFundo.png"
+    ? "/CSC-SemFundo-Special.png"
+    : "/CSC-SemFundo.png"
   
   const NavItems = ({ inSheet = false }) => (
     <div className="flex items-center space-x-4">
