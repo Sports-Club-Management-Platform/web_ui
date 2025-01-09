@@ -100,7 +100,7 @@ export interface TicketWithStockResponse {
     stripe_image_url: string
     stock: {
         stock: number
-    }
+    } | undefined
 }
 
 export interface StockResponse {

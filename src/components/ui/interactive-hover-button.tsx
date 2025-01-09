@@ -2,7 +2,7 @@ import React from "react";
 import { ArrowRight, LucideIcon } from 'lucide-react';
 import { cn } from "@/lib/utils";
 
-type ButtonVariant = "default" | "primary" | "secondary" | "danger" | "ghost" | "underline";
+export type ButtonVariant = "default" | "primary" | "secondary" | "danger" | "ghost" | "underline";
 
 interface InteractiveHoverButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {

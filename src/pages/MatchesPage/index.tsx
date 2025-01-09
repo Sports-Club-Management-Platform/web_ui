@@ -7,7 +7,7 @@ import { useTheme } from "@/components/theme-provider"
 import NextGame from "./components/NextGame"
 import FilterControls from "./components/FilterControls"
 import GameCard from "./components/GameCard"
-import { GameResponse, ClubResponse, TicketResponse } from "@/lib/types"
+import { GameResponse, ClubResponse, TicketResponse, TicketWithStockResponse } from "@/lib/types"
 import { GamesService } from "@/services/Client/GamesService"
 import { ClubService } from "@/services/Client/ClubService"
 import { TicketService } from "@/services/Client/TicketService"
@@ -57,7 +57,7 @@ export default function MatchesPage() {
     queries: tickets.map(ticket => ({
       queryKey: ["ticketStock", ticket.id],
       queryFn: () => PaymentsService.getTicketStock(ticket.id),
-      select: (response: { data: unknown }) => response.data,
+      select: (response: { data: { stock: number } }) => response.data,
     })),
   })
 
@@ -68,7 +68,9 @@ export default function MatchesPage() {
     }))
   }, [tickets, ticketQueries])
 
-  const getTicketByGameId = (gameId: number) => ticketsWithStock.find(ticket => ticket.game_id === gameId)
+  const getTicketByGameId = (gameId: number): TicketWithStockResponse | undefined => { 
+    return ticketsWithStock.find(ticket => ticket.game_id === gameId)
+  }
   const getClubById = (id: number) => clubs.find(club => club.id === id)
 
   const proximoJogo = jogos

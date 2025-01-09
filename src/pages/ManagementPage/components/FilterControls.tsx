@@ -5,16 +5,19 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Modal, ModalTrigger, ModalBody } from '@/components/ui/animated-modal'
 import { AddTicketModalContent } from './AddTicketModalContent'
 import { DateRangePicker } from "@/components/ui/date-range-picker"
-import { pt } from "date-fns/locale"
 import { ValidateTicketModalContent } from "./ValidateTicketModalContent"
 
+interface DateRange {
+  from: Date;
+  to?: Date;
+}
 interface FilterControlsProps {
-  filtro: string
-  setFiltro: (filtro: string) => void
-  pesquisa: string
-  setPesquisa: (pesquisa: string) => void
-  dataFiltro: { from: Date; to: Date | undefined } | null
-  setDataFiltro: (data: { from: Date; to: Date | undefined } | null) => void
+  readonly filtro: string;
+  readonly setFiltro: (filtro: string) => void;
+  readonly pesquisa: string;
+  readonly setPesquisa: (pesquisa: string) => void;
+  readonly dataFiltro: DateRange | null;
+  readonly setDataFiltro: (data: DateRange | null) => void;
 }
 
 export default function FilterControls({
@@ -33,7 +36,7 @@ export default function FilterControls({
           initialDateFrom={dataFiltro?.from}
           initialDateTo={dataFiltro?.to}
           align="start"
-          locale={pt}
+          locale={"pt"}
           showCompare={false}
         />
         {dataFiltro && (

@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { TextSearch } from 'lucide-react'
 import { ComprehensiveTicketData } from "./columns.tsx"
 import { Modal, ModalTrigger, ModalBody, ModalContent } from "@/components/ui/animated-modal.tsx"

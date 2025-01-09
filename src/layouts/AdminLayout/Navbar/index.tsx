@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Bell, Calendar, CreditCard, Home, LifeBuoy, Send, Settings, Ticket, Users, Volleyball } from 'lucide-react'
+import { Bell, Calendar, Home, LifeBuoy, Send, Settings, Ticket, Users, Volleyball } from 'lucide-react'
 
 import { NavMain } from "./components/nav-main"
 import { NavUser } from "./components/nav-user"

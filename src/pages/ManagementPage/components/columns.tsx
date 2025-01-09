@@ -152,7 +152,7 @@ export const columns: ColumnDef<ComprehensiveTicketData>[] = [
     cell: ({ row }) => {
       return <>{row.original.fullGameData ? format(parseISO(row.original.fullGameData.date_time), "d MMMM 'de' yyyy", { locale: pt }) : "N/A"}</>
     },
-    sortingFn: (rowA, rowB, columnId) => {
+    sortingFn: (rowA, rowB) => {
       const dateA = rowA.original.fullGameData ? parseISO(rowA.original.fullGameData.date_time) : new Date(0);
       const dateB = rowB.original.fullGameData ? parseISO(rowB.original.fullGameData.date_time) : new Date(0);
       return dateA.getTime() - dateB.getTime();
@@ -174,7 +174,7 @@ export const columns: ColumnDef<ComprehensiveTicketData>[] = [
     cell: ({ row }) => {
       return <>{row.original.fullGameData ? format(parseISO(row.original.fullGameData.date_time), "HH:mm") : "N/A"}</>
     },
-    sortingFn: (rowA, rowB, columnId) => {
+    sortingFn: (rowA, rowB) => {
       const timeA = rowA.original.fullGameData ? parseISO(rowA.original.fullGameData.date_time).getTime() % (24 * 60 * 60 * 1000) : 0;
       const timeB = rowB.original.fullGameData ? parseISO(rowB.original.fullGameData.date_time).getTime() % (24 * 60 * 60 * 1000) : 0;
       return timeA - timeB;

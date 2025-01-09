@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-import { ModalContent, ModalFooter, ModalCancelButton, useModal } from '@/components/ui/animated-modal'
+import { ModalContent, ModalFooter, ModalCancelButton } from '@/components/ui/animated-modal'
 import { ConfettiButton } from "@/components/ui/confetti"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -46,7 +46,6 @@ interface TicketValidationResult {
 export function ValidateTicketModalContent() {
   const [validationResult, setValidationResult] = useState<TicketValidationResult | null>(null)
   const [isValidated, setIsValidated] = useState(false)
-  const { setOpen } = useModal()
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -170,7 +169,7 @@ export function ValidateTicketModalContent() {
       </div>
       <ModalFooter className='bg-transparent justify-center space-x-4'>
         {isValidated && (
-          <ModalCancelButton className="mx-auto">Fechar</ModalCancelButton>
+          <ModalCancelButton>Fechar</ModalCancelButton>
         )}
       </ModalFooter>
     </ModalContent>

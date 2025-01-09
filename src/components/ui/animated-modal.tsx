@@ -10,8 +10,8 @@ import React, {
   useRef,
   useState,
 } from "react";
-import InteractiveHoverButton from "./interactive-hover-button";
-import { Plus, TypeIcon as type, LucideIcon } from 'lucide-react';
+import InteractiveHoverButton, {ButtonVariant} from "./interactive-hover-button";
+import { Plus, LucideIcon } from 'lucide-react';
 import { Button } from "./button";
 
 interface ModalContextType {
@@ -44,6 +44,14 @@ export const useModal = () => {
 
 export function Modal({ children }: { children: ReactNode }) {
   return <ModalProvider>{children}</ModalProvider>;
+}
+
+interface ModalTriggerProps {
+  children?: ReactNode;
+  className?: string;
+  variant?: ButtonVariant;
+  text?: string;
+  icon?: LucideIcon;
 }
 
 export const ModalTrigger: React.FC<ModalTriggerProps> = ({

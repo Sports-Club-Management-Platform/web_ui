@@ -35,9 +35,10 @@ export default function TicketPurchasePage() {
     enabled: !!game?.pavilion_id,
   })
 
+
   const {data: stock} = useQuery<StockResponse>({
     queryKey: ["stock", ticket?.id],
-    queryFn: () => PaymentsService.getTicketStock(ticket.id).then(response => response.data),
+    queryFn: () => ticket ? PaymentsService.getTicketStock(ticket.id).then(response => response.data) : Promise.resolve(null),
     enabled: !!ticket,
   })
 

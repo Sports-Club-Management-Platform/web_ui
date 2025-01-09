@@ -1,30 +1,27 @@
 "use client"
 
 import { useState, useMemo } from "react"
-import { parseISO, isSameDay } from "date-fns"
+import { parseISO, isSameDay, isWithinInterval } from "date-fns"
 import FilterControls from "./components/FilterControls"
 import { GameResponse, ClubResponse, StockResponse } from "@/lib/types"
 import { GamesService } from "@/services/Client/GamesService"
 import { ClubService } from "@/services/Client/ClubService"
 import { useQuery, useQueries } from "@tanstack/react-query"
-import {columns, TicketColumn} from "./components/columns.tsx";
+import {columns, ComprehensiveTicketData} from "./components/columns.tsx";
 import {DataTable} from "./components/data-table.tsx";
 import {TicketResponse} from "../../lib/types.ts";
 import {TicketService} from "../../services/Client/TicketService.tsx";
 import { PaymentsService } from "@/services/Client/PaymentsService"
+import { ColumnDef } from "@tanstack/react-table"
 
-interface ComprehensiveTicketData extends TicketColumn {
-  fullGameData: GameResponse;
-  fullHomeClubData: ClubResponse;
-  fullVisitorClubData: ClubResponse;
-  fullStockData: StockResponse;
+interface DateRange {
+  from: Date;
+  to?: Date;
 }
-
 export default function MatchesPage() {
   const [filtro, setFiltro] = useState("todos")
   const [pesquisa, setPesquisa] = useState("")
-  const [dataFiltro, setDataFiltro] = useState<Date | null>(null)
-
+  const [dataFiltro, setDataFiltro] = useState<DateRange | null>(null);
   const dataAtual = new Date()
 
   const { data: jogos = [] } = useQuery<GameResponse[]>({
@@ -99,8 +96,13 @@ export default function MatchesPage() {
   }
 
   const filtrarPorData = (ticket: ComprehensiveTicketData) => {
-    if (!dataFiltro) return true
-    return ticket.game ? isSameDay(parseISO(ticket.game.date_time), dataFiltro) : false
+    if (!dataFiltro?.from) return true
+    const gameDate = ticket.game ? parseISO(ticket.game.date_time) : null
+    if (!gameDate) return false
+    if (dataFiltro.to) {
+      return isWithinInterval(gameDate, { start: dataFiltro.from, end: dataFiltro.to })
+    }
+    return isSameDay(gameDate, dataFiltro.from)
   }
 
   const filtrarJogosFuturos = (ticket: ComprehensiveTicketData) => {
@@ -114,12 +116,12 @@ export default function MatchesPage() {
     .filter(filtrarPorData)
     .filter(filtrarJogosFuturos)
 
-  const handleDateSelect = (date: Date | null) => {
-    setDataFiltro(date)
-    if (date) {
-      setFiltro("todos")
+    const handleDateSelect = (range: DateRange | null) => {
+      setDataFiltro(range || null)
+      if (range?.from) {
+        setFiltro("todos")
+      }
     }
-  }
 
   return (
     <div className="container pt-12 mx-auto p-4 space-y-6">
@@ -141,7 +143,7 @@ export default function MatchesPage() {
 
       <div className="container mx-auto">
         <DataTable
-          columns={columns}
+          columns={columns as ColumnDef<ComprehensiveTicketData, unknown>[]}
           data={ticketsFiltrados}
         />
       </div>
