@@ -1,7 +1,11 @@
-"use client"
+"use client";
 
-import CSCLogo from "@/assets/CSC-SemFundo.png";
-import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar"
+import CSCLogo from "/CSC-SemFundo.png";
+import {
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+} from "@/components/ui/sidebar";
 
 export function TeamSwitcher() {
   return (
@@ -17,9 +21,7 @@ export function TeamSwitcher() {
             </div>
             <div className="flex-1 min-w-0">
               <div className="grid text-left text-sm leading-tight">
-                <span className="truncate font-semibold">
-                  Adminstation
-                </span>
+                <span className="truncate font-semibold">Adminstation</span>
                 <span className="truncate text-xs">Candelária S. C.</span>
               </div>
             </div>
@@ -27,5 +29,5 @@ export function TeamSwitcher() {
         </SidebarMenuButton>
       </SidebarMenuItem>
     </SidebarMenu>
-  )
+  );
 }
