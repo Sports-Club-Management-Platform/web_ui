@@ -7,7 +7,7 @@ import { GamesService } from "@/services/Client/GamesService"
 import { ClubService } from "@/services/Client/ClubService"
 import { GameResponse, ClubResponse } from "@/lib/types"
 import { columns } from "./components/columns"
-import { DataTable } from "./components/data-table"
+import { DataTable } from "@/components/data-table"
 import GameFilterControls from "./components/GameFilterControls"
 import { ColumnDef } from "@tanstack/react-table"
 

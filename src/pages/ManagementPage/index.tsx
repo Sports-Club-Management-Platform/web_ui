@@ -8,7 +8,7 @@ import { GamesService } from "@/services/Client/GamesService"
 import { ClubService } from "@/services/Client/ClubService"
 import { useQuery, useQueries } from "@tanstack/react-query"
 import {columns, ComprehensiveTicketData} from "./components/columns.tsx";
-import {DataTable} from "./components/data-table.tsx";
+import {DataTable} from "@/components/data-table.tsx";
 import {TicketResponse} from "@/lib/types.ts";
 import {TicketService} from "@/services/Client/TicketService.tsx";
 import { PaymentsService } from "@/services/Client/PaymentsService"
