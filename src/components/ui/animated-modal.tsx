@@ -1,4 +1,5 @@
 "use client";
+
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import React, {
@@ -9,21 +10,25 @@ import React, {
   useRef,
   useState,
 } from "react";
-import InteractiveHoverButton from "./interactive-hover-button";
-import { Plus } from "lucide-react";
+import InteractiveHoverButton, {ButtonVariant} from "./interactive-hover-button";
+import { Plus, LucideIcon } from 'lucide-react';
+import { Button } from "./button";
 
 interface ModalContextType {
   open: boolean;
   setOpen: (open: boolean) => void;
+  visible: boolean;
+  setVisible: (visible: boolean) => void;
 }
 
 const ModalContext = createContext<ModalContextType | undefined>(undefined);
 
 export const ModalProvider = ({ children }: { children: ReactNode }) => {
   const [open, setOpen] = useState(false);
+  const [visible, setVisible] = useState(true);
 
   return (
-    <ModalContext.Provider value={{ open, setOpen }}>
+    <ModalContext.Provider value={{ open, setOpen, visible, setVisible }}>
       {children}
     </ModalContext.Provider>
   );
@@ -41,23 +46,32 @@ export function Modal({ children }: { children: ReactNode }) {
   return <ModalProvider>{children}</ModalProvider>;
 }
 
-export const ModalTrigger = ({
+interface ModalTriggerProps {
+  children?: ReactNode;
+  className?: string;
+  variant?: ButtonVariant;
+  text?: string;
+  icon?: LucideIcon;
+}
+
+export const ModalTrigger: React.FC<ModalTriggerProps> = ({
   children,
   className,
-}: {
-  children: ReactNode;
-  className?: string;
+  variant = "primary",
+  text = "Open Modal",
+  icon: Icon = Plus,
 }) => {
-  const { setOpen } = useModal();
+  const { setOpen, setVisible } = useModal();
   return (
     <InteractiveHoverButton
-      variant="primary"
-      className={cn(
-        className
-      )}
-      text="Adicionar Ticket"
-      icon={Plus}
-      onClick={() => setOpen(true)}
+      variant={variant}
+      className={cn(className)}
+      text={text}
+      icon={Icon}
+      onClick={() => {
+        setOpen(true);
+        setVisible(true);
+      }}
     >
       {children}
     </InteractiveHoverButton>
@@ -71,18 +85,26 @@ export const ModalBody = ({
   children: ReactNode;
   className?: string;
 }) => {
-  const { open } = useModal();
+  const { open, visible, setOpen } = useModal();
 
   useEffect(() => {
     if (open) {
       document.body.style.overflow = "hidden";
+      const handleEscKey = (event: KeyboardEvent) => {
+        if (event.key === "Escape") {
+          setOpen(false);
+        }
+      };
+      document.addEventListener("keydown", handleEscKey);
+      return () => {
+        document.removeEventListener("keydown", handleEscKey);
+      };
     } else {
       document.body.style.overflow = "auto";
     }
-  }, [open]);
+  }, [open, setOpen]);
 
   const modalRef = useRef(null);
-  const { setOpen } = useModal();
   useOutsideClick(modalRef, () => setOpen(false));
 
   return (
@@ -93,16 +115,16 @@ export const ModalBody = ({
             opacity: 0,
           }}
           animate={{
-            opacity: 1,
-            backdropFilter: "blur(10px)",
+            opacity: visible ? 1 : 0,
+            backdropFilter: visible ? "blur(10px)" : "blur(0px)",
           }}
           exit={{
             opacity: 0,
             backdropFilter: "blur(0px)",
           }}
-          className="fixed [perspective:800px] [transform-style:preserve-3d] inset-0 h-full w-full  flex items-center justify-center z-50"
+          className="fixed [perspective:800px] [transform-style:preserve-3d] inset-0 h-full w-full flex items-center justify-center z-50"
         >
-          <Overlay />
+          <Overlay visible={visible} />
 
           <motion.div
             ref={modalRef}
@@ -117,10 +139,10 @@ export const ModalBody = ({
               y: 40,
             }}
             animate={{
-              opacity: 1,
-              scale: 1,
-              rotateX: 0,
-              y: 0,
+              opacity: visible ? 1 : 0,
+              scale: visible ? 1 : 0.5,
+              rotateX: visible ? 0 : 40,
+              y: visible ? 0 : 40,
             }}
             exit={{
               opacity: 0,
@@ -174,16 +196,15 @@ export const ModalFooter = ({
     </div>
   );
 };
-
-const Overlay = ({ className }: { className?: string }) => {
+const Overlay = ({ visible, className }: { visible: boolean, className?: string }) => {
   return (
     <motion.div
       initial={{
         opacity: 0,
       }}
       animate={{
-        opacity: 1,
-        backdropFilter: "blur(10px)",
+        opacity: visible ? 1 : 0,
+        backdropFilter: visible ? "blur(10px)" : "blur(0px)",
       }}
       exit={{
         opacity: 0,
@@ -195,10 +216,13 @@ const Overlay = ({ className }: { className?: string }) => {
 };
 
 const CloseIcon = () => {
-  const { setOpen } = useModal();
+  const { setOpen, setVisible } = useModal();
   return (
     <button
-      onClick={() => setOpen(false)}
+      onClick={() => {
+        setVisible(false);
+        setTimeout(() => setOpen(false), 300); // Delay closing to allow for fade out animation
+      }}
       className="absolute top-4 right-4 group"
     >
       <svg
@@ -220,6 +244,7 @@ const CloseIcon = () => {
     </button>
   );
 };
+
 
 // Hook to detect clicks outside of a component.
 // Add it in a separate file, I've added here for simplicity
@@ -244,4 +269,21 @@ export const useOutsideClick = (
       document.removeEventListener("touchstart", listener);
     };
   }, [ref, callback]);
+};
+
+export const ModalCancelButton = ({ onClick, children }: { onClick?: () => void, children?: ReactNode }) => {
+  const { setOpen } = useModal();
+  
+  const handleClick = () => {
+    setOpen(false);
+    if (onClick) {
+      onClick();
+    }
+  };
+
+  return (
+    <Button variant="outline" onClick={handleClick}>
+      {children || "Cancel"}
+    </Button>
+  );
 };

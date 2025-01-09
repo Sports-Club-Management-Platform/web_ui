@@ -1,22 +1,27 @@
 "use client"
 
-import { useState } from "react"
-import { parseISO, isSameDay } from "date-fns"
+import { useState, useMemo } from "react"
+import { parseISO, isSameDay, isWithinInterval } from "date-fns"
 import FilterControls from "./components/FilterControls"
-import { GameResponse, ClubResponse } from "@/lib/types"
+import { GameResponse, ClubResponse, StockResponse } from "@/lib/types"
 import { GamesService } from "@/services/Client/GamesService"
 import { ClubService } from "@/services/Client/ClubService"
-import { useQuery } from "@tanstack/react-query"
-import {columns, TicketColumn} from "./components/columns.tsx";
+import { useQuery, useQueries } from "@tanstack/react-query"
+import {columns, ComprehensiveTicketData} from "./components/columns.tsx";
 import {DataTable} from "./components/data-table.tsx";
 import {TicketResponse} from "../../lib/types.ts";
 import {TicketService} from "../../services/Client/TicketService.tsx";
+import { PaymentsService } from "@/services/Client/PaymentsService"
+import { ColumnDef } from "@tanstack/react-table"
 
+interface DateRange {
+  from: Date;
+  to?: Date;
+}
 export default function MatchesPage() {
   const [filtro, setFiltro] = useState("todos")
   const [pesquisa, setPesquisa] = useState("")
-  const [dataFiltro, setDataFiltro] = useState<Date | null>(null)
-
+  const [dataFiltro, setDataFiltro] = useState<DateRange | null>(null);
   const dataAtual = new Date()
 
   const { data: jogos = [] } = useQuery<GameResponse[]>({
@@ -43,24 +48,43 @@ export default function MatchesPage() {
     },
   })
 
+  const stockQueries = useQueries({
+    queries: tickets.map((ticket) => ({
+      queryKey: ["stock", ticket.id],
+      queryFn: () => PaymentsService.getTicketStock(ticket.id).then(response => response.data),
+      enabled: !!ticket,
+    })),
+  })
+
   const getClubById = (id: number) => clubs.find(club => club.id === id)
 
-  const columnData: TicketColumn[] = tickets.map((ticket: TicketResponse): TicketColumn => {
-    const game: GameResponse | undefined = jogos.find(game => game.id === ticket.game_id);
-    return {
-      ticket: ticket,
-      game: game,
-      home_club: game ? getClubById(game.club_home_id) : undefined,
-      visitor_club: game ? getClubById(game.club_visitor_id) : undefined,
-    };
-  });
+  const comprehensiveData: ComprehensiveTicketData[] = useMemo(() => {
+    return tickets.map((ticket: TicketResponse, index: number): ComprehensiveTicketData => {
+      const game: GameResponse | undefined = jogos.find(game => game.id === ticket.game_id);
+      const stock: StockResponse | undefined = stockQueries[index].data;
+      const homeClub = game ? getClubById(game.club_home_id) : undefined;
+      const visitorClub = game ? getClubById(game.club_visitor_id) : undefined;
 
-  const filtrarPorJornada = (ticket: TicketColumn) => {
+      return {
+        ticket: ticket,
+        game: game,
+        home_club: homeClub,
+        visitor_club: visitorClub,
+        stock: stock?.stock,
+        fullGameData: game!,
+        fullHomeClubData: homeClub!,
+        fullVisitorClubData: visitorClub!,
+        fullStockData: stock!,
+      };
+    });
+  }, [tickets, jogos, clubs, stockQueries]);
+
+  const filtrarPorJornada = (ticket: ComprehensiveTicketData) => {
     if (dataFiltro || filtro === "todos" || filtro === "futuros") return true
     return ticket.game?.jornada === parseInt(filtro)
   }
 
-  const filtrarPorPesquisa = (ticket: TicketColumn) => {
+  const filtrarPorPesquisa = (ticket: ComprehensiveTicketData) => {
     const termoPesquisa = pesquisa.toLowerCase()
     const clubeCasa = ticket.home_club
     const clubeVisitante = ticket.visitor_club
@@ -71,33 +95,36 @@ export default function MatchesPage() {
     )
   }
 
-  const filtrarPorData = (ticket: TicketColumn) => {
-    if (!dataFiltro) return true
-    return ticket.game ? isSameDay(parseISO(ticket.game.date_time), dataFiltro) : false
+  const filtrarPorData = (ticket: ComprehensiveTicketData) => {
+    if (!dataFiltro?.from) return true
+    const gameDate = ticket.game ? parseISO(ticket.game.date_time) : null
+    if (!gameDate) return false
+    if (dataFiltro.to) {
+      return isWithinInterval(gameDate, { start: dataFiltro.from, end: dataFiltro.to })
+    }
+    return isSameDay(gameDate, dataFiltro.from)
   }
 
-  const filtrarJogosFuturos = (ticket: TicketColumn) => {
+  const filtrarJogosFuturos = (ticket: ComprehensiveTicketData) => {
     if (dataFiltro) return true
     return filtro === "futuros" ? ticket.game && parseISO(ticket.game.date_time) > dataAtual : true
   }
 
-  // why is this not working
-  const ticketsFiltrados: TicketColumn[] = columnData
+  const ticketsFiltrados: ComprehensiveTicketData[] = comprehensiveData
     .filter(filtrarPorJornada)
     .filter(filtrarPorPesquisa)
     .filter(filtrarPorData)
     .filter(filtrarJogosFuturos)
 
-  const handleDateSelect = (date: Date | null) => {
-    setDataFiltro(date)
-    if (date) {
-      setFiltro("todos")
+    const handleDateSelect = (range: DateRange | null) => {
+      setDataFiltro(range || null)
+      if (range?.from) {
+        setFiltro("todos")
+      }
     }
-  }
 
   return (
     <div className="container pt-12 mx-auto p-4 space-y-6">
-
       <div className="text-center mb-8">
         <h1 className="text-4xl font-bold mb-2">Ticket Management</h1>
         <p className="text-xl text-muted-foreground">Gerencie todos os jogos e os seus ingressos!</p>
@@ -116,12 +143,10 @@ export default function MatchesPage() {
 
       <div className="container mx-auto">
         <DataTable
-          columns={columns}
+          columns={columns as ColumnDef<ComprehensiveTicketData, unknown>[]}
           data={ticketsFiltrados}
         />
       </div>
-
-
     </div>
   )
 }

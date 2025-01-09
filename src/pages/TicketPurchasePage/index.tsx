@@ -4,13 +4,14 @@ import { useState } from "react"
 import {useNavigate, useParams} from "react-router-dom"
 import GameHeader from "./components/GameHeader"
 import TicketSelection from "./components/TicketSelection"
-import { GameResponse, PavilionResponse } from "@/lib/types"
+import { GameResponse, PavilionResponse, StockResponse } from "@/lib/types"
 import { useQuery } from "@tanstack/react-query"
 import { GamesService } from "@/services/Client/GamesService"
 import { PavilionsService } from "@/services/Client/PavilionsService"
 import { Skeleton } from "@/components/ui/skeleton"
 import {TicketService} from "@/services/Client/TicketService.tsx";
-import {TicketResponse} from "../../lib/types.ts";
+import {TicketResponse} from "@/lib/types.ts";
+import { PaymentsService } from "@/services/Client/PaymentsService"
 
 export default function TicketPurchasePage() {
   const { gameId } = useParams()
@@ -33,6 +34,14 @@ export default function TicketPurchasePage() {
     queryFn: () => PavilionsService.getPavilion(game?.pavilion_id.toString() || '').then(response => response.data),
     enabled: !!game?.pavilion_id,
   })
+
+
+  const {data: stock} = useQuery<StockResponse>({
+    queryKey: ["stock", ticket?.id],
+    queryFn: () => ticket ? PaymentsService.getTicketStock(ticket.id).then(response => response.data) : Promise.resolve(null),
+    enabled: !!ticket,
+  })
+
 
   const handleTicketChange = (quantity: number) => {
     setSelectedNumberTickets(quantity)
@@ -76,6 +85,8 @@ export default function TicketPurchasePage() {
     )
   }
 
+  const isStockAvailable = stock !== undefined && selectedNumberTickets <= stock.stock;
+
   return (
     <div className="min-h-screen pt-36 relative">
       <div 
@@ -87,12 +98,16 @@ export default function TicketPurchasePage() {
       <div className="relative z-10 container mx-auto px-4 py-8 text-white">
         <h1 className="text-4xl font-bold mb-8 text-center">Compra de Bilhetes</h1>
         {pavilion && <GameHeader game={game} pavilion={pavilion} />}
-        <div className="grid grid-cols-1 gap-8">
-          <TicketSelection
-            selectedNumberTickets={selectedNumberTickets}
-            ticketData={ticket}
-            onTicketChange={handleTicketChange}
-          />
+        <div className="flex justify-center">
+          <div className="max-w-2xl w-full">
+            <TicketSelection
+              selectedNumberTickets={selectedNumberTickets}
+              ticketData={ticket}
+              onTicketChange={handleTicketChange}
+              stock={stock?.stock}
+              isStockAvailable={isStockAvailable}
+            />
+          </div>
         </div>
       </div>
     </div>

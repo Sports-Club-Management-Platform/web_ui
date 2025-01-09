@@ -1,36 +1,33 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useMemo, useEffect } from "react"
 import { parseISO, isSameDay } from "date-fns"
 import { AnimatePresence } from "framer-motion"
 import { useTheme } from "@/components/theme-provider"
 import NextGame from "./components/NextGame"
 import FilterControls from "./components/FilterControls"
 import GameCard from "./components/GameCard"
-import { GameResponse, ClubResponse } from "@/lib/types"
+import { GameResponse, ClubResponse, TicketResponse, TicketWithStockResponse } from "@/lib/types"
 import { GamesService } from "@/services/Client/GamesService"
 import { ClubService } from "@/services/Client/ClubService"
-import { useQuery } from "@tanstack/react-query"
-import {TicketResponse} from "../../lib/types.ts";
-import {TicketService} from "../../services/Client/TicketService.tsx";
-import { DotPattern } from "@/components/ui/dot-pattern.tsx"
-import { cn } from "@/lib/utils.ts"
+import { TicketService } from "@/services/Client/TicketService"
+import { PaymentsService } from "@/services/Client/PaymentsService"
+import { useQuery, useQueries } from "@tanstack/react-query"
+import { DotPattern } from "@/components/ui/dot-pattern"
+import { cn } from "@/lib/utils"
+import { useInView } from "react-intersection-observer"
+
+const ITEMS_PER_PAGE = 6; // Número de itens a carregar por página
 
 export default function MatchesPage() {
   const [filtro, setFiltro] = useState("todos")
   const [pesquisa, setPesquisa] = useState("")
   const [dataFiltro, setDataFiltro] = useState<Date | null>(null)
   const { theme } = useTheme()
+  const [page, setPage] = useState(1)
+  const [ref, inView] = useInView()
 
   const dataAtual = new Date()
-
-  const { data: tickets = [] } = useQuery<TicketResponse[]>({
-    queryKey: ["tickets"],
-    queryFn: async () => {
-      const response = await TicketService.getTickets()
-      return response.data
-    },
-  })
 
   const { data: jogos = [] } = useQuery<GameResponse[]>({
     queryKey: ["games"],
@@ -48,7 +45,32 @@ export default function MatchesPage() {
     },
   })
 
-  const getTicketByGameId = (gameId: number) => tickets.find(ticket => ticket.game_id === gameId)
+  const { data: tickets = [] } = useQuery<TicketResponse[]>({
+    queryKey: ["tickets"],
+    queryFn: async () => {
+      const response = await TicketService.getTickets()
+      return response.data
+    },
+  })
+
+  const ticketQueries = useQueries({
+    queries: tickets.map(ticket => ({
+      queryKey: ["ticketStock", ticket.id],
+      queryFn: () => PaymentsService.getTicketStock(ticket.id),
+      select: (response: { data: { stock: number } }) => response.data,
+    })),
+  })
+
+  const ticketsWithStock = useMemo(() => {
+    return tickets.map((ticket, index) => ({
+      ...ticket,
+      stock: ticketQueries[index].data,
+    }))
+  }, [tickets, ticketQueries])
+
+  const getTicketByGameId = (gameId: number): TicketWithStockResponse | undefined => { 
+    return ticketsWithStock.find(ticket => ticket.game_id === gameId)
+  }
   const getClubById = (id: number) => clubs.find(club => club.id === id)
 
   const proximoJogo = jogos
@@ -87,6 +109,14 @@ export default function MatchesPage() {
     .filter(filtrarPorData)
     .filter(filtrarJogosFuturos)
 
+  const jogosExibidos = jogosFiltrados.slice(0, page * ITEMS_PER_PAGE)
+
+  useEffect(() => {
+    if (inView && jogosExibidos.length < jogosFiltrados.length) {
+      setPage(prevPage => prevPage + 1)
+    }
+  }, [inView, jogosExibidos.length, jogosFiltrados.length])
+
   const handleDateSelect = (date: Date | null) => {
     setDataFiltro(date)
     if (date) {
@@ -111,17 +141,27 @@ export default function MatchesPage() {
       />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <AnimatePresence>
-          {jogosFiltrados.map((jogo, index) => (
-            <GameCard key={jogo.id} jogo={jogo} ticket={getTicketByGameId(jogo.id)} clubs={clubs} index={index} dataAtual={dataAtual} />
+          {jogosExibidos.map((jogo, index) => (
+            <GameCard 
+              key={jogo.id} 
+              jogo={jogo} 
+              ticket={getTicketByGameId(jogo.id)} 
+              clubs={clubs} 
+              index={index} 
+              dataAtual={dataAtual} 
+            />
           ))}
         </AnimatePresence>
       </div>
+      {jogosExibidos.length < jogosFiltrados.length && (
+        <div ref={ref} className="h-10" /> // Elemento observável para carregar mais itens
+      )}
       {jogosFiltrados.length === 0 && (
         <p className="text-center text-muted-foreground mt-8">Nenhum jogo encontrado para os filtros selecionados.</p>
       )}
       <DotPattern
         className={cn(
-          "[mask-image:radial-gradient(10000px_circle_at_center,rgba(255,255,255,0.2),transparent)]"
+          "[mask-image:radial-gradient(10000px_circle_at_center,rgba(255,255,255,0.1),transparent)]"
         )}
       />
     </div>
